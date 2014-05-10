@@ -11,8 +11,9 @@ public class SwingControlDemo implements ActionListener {
    private JLabel headerLabel;
    private JLabel statusLabel;
    private JPanel controlPanel;
-
-   public SwingControlDemo(){
+   String text;
+   public SwingControlDemo(String m){
+       text = m;
       prepareGUI();
    }
 
@@ -40,7 +41,7 @@ public class SwingControlDemo implements ActionListener {
    }
 
    void showLabelDemo(){
-      headerLabel.setText("Please choose one model to start the game!");      
+      headerLabel.setText(text);      
 
 //      JLabel label  = new JLabel("", JLabel.CENTER); 
       JButton button1 = new JButton();

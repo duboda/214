@@ -11,25 +11,12 @@ import java.lang.Math;
 
 
 public class Shape {
-
+    
+    // Tetromino type reference
     enum Tetrominoes { NoShape, ZShape, SShape, LineShape, 
                TShape, SquareShape, LShape, MirroredLShape };
-
-    private Tetrominoes pieceShape;
-    private int coords[][];
-    private int[][][] coordsTable;
-
-
-    public Shape() {
-
-        coords = new int[4][2];
-        setShape(Tetrominoes.NoShape);
-
-    }
-
-    public void setShape(Tetrominoes shape) {
-
-         coordsTable = new int[][][] {
+    // Tetromino shape coordinates reference table
+    private static final int[][][] coordsTable = new int[][][] {
             { { 0, 0 },   { 0, 0 },   { 0, 0 },   { 0, 0 } },
             { { 0, -1 },  { 0, 0 },   { -1, 0 },  { -1, 1 } },
             { { 0, -1 },  { 0, 0 },   { 1, 0 },   { 1, 1 } },
@@ -39,6 +26,28 @@ public class Shape {
             { { -1, -1 }, { 0, -1 },  { 0, 0 },   { 0, 1 } },
             { { 1, -1 },  { 0, -1 },  { 0, 0 },   { 0, 1 } }
         };
+    
+    // Tetromino type
+    private Tetrominoes pieceShape;
+    // Tetromino shape coordinates
+    private int coords[][];
+    
+
+    /**
+     * Class constructor
+     */
+    public Shape() {
+
+        coords = new int[4][2];
+        setShape(Tetrominoes.NoShape);
+
+    }
+
+    /**
+     * Sets this Tetromino to specified shape by looking up reference table
+     * @param shape Tetromino shape to set to
+     */
+    public void setShape(Tetrominoes shape) {
 
         for (int i = 0; i < 4 ; i++) {
             for (int j = 0; j < 2; ++j) {
@@ -49,12 +58,16 @@ public class Shape {
 
     }
 
+    // simple getter/setters
     private void setX(int index, int x) { coords[index][0] = x; }
     private void setY(int index, int y) { coords[index][1] = y; }
     public int x(int index) { return coords[index][0]; }
     public int y(int index) { return coords[index][1]; }
     public Tetrominoes getShape()  { return pieceShape; }
-
+    
+    /**
+     * Randomly sets the shape of a piece.
+     */
     public void setRandomShape()
     {
         Random r = new Random();
@@ -62,26 +75,37 @@ public class Shape {
         Tetrominoes[] values = Tetrominoes.values(); 
         setShape(values[x]);
     }
-
+    
+    /**
+     * Returns the minimum x-coordinate within the shape
+     * @return minimum x-coordinate within the shape
+     */
     public int minX()
     {
       int m = coords[0][0];
       for (int i=0; i < 4; i++) {
-          m = Math.min(m, coords[i][0]);
+          m = Math.min(m, this.x(i));
       }
       return m;
     }
 
-
+    /**
+     * Returns the minimum y-coordinate within the shape
+     * @return minimum y-coordinate within the shape
+     */
     public int minY() 
     {
       int m = coords[0][1];
       for (int i=0; i < 4; i++) {
-          m = Math.min(m, coords[i][1]);
+          m = Math.min(m, this.y(i));
       }
       return m;
     }
-
+    
+    /**
+     * Sets the coordinates in the piece to simulate left rotation.
+     * @return left "rotated" piece
+     */
     public Shape rotateLeft() 
     {
         if (pieceShape == Tetrominoes.SquareShape)
@@ -97,6 +121,10 @@ public class Shape {
         return result;
     }
 
+    /**
+     * Sets the coordinates in the piece to simulate right rotation.
+     * @return right "rotated" piece
+     */
     public Shape rotateRight()
     {
         if (pieceShape == Tetrominoes.SquareShape)

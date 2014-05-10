@@ -12,7 +12,7 @@ package pkgtry;
  */
 public class pkgtry {
        public static void main(String[] args){
-      SwingControlDemo  swingControlDemo = new SwingControlDemo();      
+      SwingControlDemo  swingControlDemo = new SwingControlDemo("please choose the model");      
       swingControlDemo.showLabelDemo();
    }
     
