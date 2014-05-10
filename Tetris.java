@@ -23,19 +23,28 @@ public class Tetris  {
 
     JLabel statusbar;
     JLabel statusbar2;
+    
+    //JLabel nextLabel;
+    JLabel nextPiece;
+    JLabel nextPiece2;
+    
+    JLabel heldPiece;
+    JLabel heldPiece2;
+    
     JFrame newframe;
     JPanel newpanel;
 //    JFrame newframeL;
     public Tetris() {
 //        newframeL = new JFrame("L");
 //        newframeL.setSize(400,800);
-        newframe = new JFrame("Qick Start");
+        newframe = new JFrame("Quick Start");
 //        setSize(200,400);
 //        newframeL.setVisible(true);
         newframe.setSize(900,600);
-        newframe.setLayout(new GridLayout(1, 1));
+        newframe.setLayout(new GridLayout(1,3));
         newframe.setVisible(true);
         newpanel = new JPanel();
+        newpanel.setLayout(new GridLayout(4,2));
 //        newpanel.setSize(200, 600);
 //        newpanel.setLayout(new FlowLayout());        
 //        newpanel.setVisible(true);
@@ -43,28 +52,43 @@ public class Tetris  {
 //        JButton button1 = new JButton();
 //        button1.setText("try");
 //        newpanel.add(button1);
-        statusbar = new JLabel("0");
-        statusbar2 = new JLabel("0");
-        newpanel.add(statusbar2);
-        newpanel.add(statusbar);
+        
+        
+        // create all labels
+        statusbar = new JLabel("0");statusbar2 = new JLabel("0");
+        nextPiece = new JLabel("Next:"); nextPiece2 = new JLabel("Next:");
+        heldPiece = new JLabel("Held:"); heldPiece2 = new JLabel("Held:");
+        
+        // add all labels to panel
+        newpanel.add(statusbar2); newpanel.add(statusbar);
+        newpanel.add(nextPiece2); newpanel.add(nextPiece);
+        newpanel.add(heldPiece2); newpanel.add(heldPiece);
+        
+        
 //        newframe.add(newpanel);
 //        newframe.add(statusbar, BorderLayout.SOUTH);
         Board board = new Board(this,1);
         Board board2 = new Board(this,2);
+        
+        // add components to frame
         newframe.add(board2);
         newframe.add(newpanel);
         newframe.add(board);
+        
+        // start boards
         board.start();
         board2.start();
+        
+        
         newframe.setDefaultCloseOperation(EXIT_ON_CLOSE);
    }
 
-   public JLabel player1() {
-       return statusbar;
-   }
-   public JLabel player2(){
-       return statusbar2;
-   }
-
- 
+    public JLabel player1() {return statusbar;}
+    public JLabel player2() {return statusbar2;}
+   
+    public JLabel nextPiece1() {return nextPiece;}
+    public JLabel nextPiece2() {return nextPiece2;}
+    
+    public JLabel heldPiece1() {return heldPiece;}
+    public JLabel heldPiece2() {return heldPiece2;}
 }
