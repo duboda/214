@@ -119,26 +119,18 @@ public class Tetris  {
 
              switch (keycode) {
              case 'a':
-                 board2.tryMove(board2.curPiece, board2.curX - 1, board2.curY);
-                 break; 
              case 'A':
                  board2.tryMove(board2.curPiece, board2.curX - 1, board2.curY);
                  break; 
              case 's':
-                 board2.oneLineDown();
-                 break;
              case 'S':
                  board2.oneLineDown();
                  break;
              case 'd':
-                 board2.tryMove(board2.curPiece, board2.curX + 1, board2.curY);
-                 break;
              case 'D':
                  board2.tryMove(board2.curPiece, board2.curX + 1, board2.curY);
                  break;                 
-             case 'w':
-                 board2.tryMove(board2.curPiece.rotateRight(), board2.curX, board2.curY);
-                 break; 
+             case 'w': 
              case 'W':
                  board2.tryMove(board2.curPiece.rotateRight(), board2.curX, board2.curY);
                  break;                  
@@ -156,6 +148,14 @@ public class Tetris  {
              case KeyEvent.VK_UP:
                  board.tryMove(board.curPiece.rotateRight(), board.curX, board.curY);
                  break;
+             case KeyEvent.VK_SHIFT:
+                    int keyLoc = e.getKeyLocation();
+                    if (keyLoc == KeyEvent.KEY_LOCATION_RIGHT)
+                        board.hold();
+                    else 
+                        board2.hold();
+                    
+                    break;
              }
 
          }

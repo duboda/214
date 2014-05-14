@@ -313,6 +313,30 @@ public class Board extends JPanel implements ActionListener {
             repaint();
         }
      }
+    
+    /**
+     * Swaps current piece and held piece
+     */
+    public void hold() {
+        // if already swapped then return
+        if (isSwapped)
+            return;
+        
+        // swap current piece and held and reset to top of board
+        Tetrominoes temp = heldPiece;
+        heldPiece = curPiece.getShape();
+        curPiece.setShape(temp);
+        curX = BOARD_WIDTH / 2;
+        curY = BOARD_HEIGHT - 1 + curPiece.minY();
+        isSwapped = true;
+                   
+        // update piece name in held slot
+        heldPieceLabel.setText("Held:\n" + heldPiece.name());  
+                    
+        // for first held piece
+        if (curPiece.getShape() == Tetrominoes.NoShape)
+            newPiece();
+    }
 
     private void drawSquare(Graphics g, int x, int y, Tetrominoes shape)
     {
