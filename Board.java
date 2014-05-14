@@ -87,7 +87,6 @@ public class Board extends JPanel implements ActionListener {
 //            System.out.println("22222222222222222");
 //       }
 //        addKeyListener(new TAdapter());
-
     }
     
     /**
