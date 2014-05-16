@@ -179,11 +179,12 @@ public class Board extends JPanel implements ActionListener {
                            curPiece.getShape());
             }
         }
+        
         if (player == 1){
-            nextPiece.draw(midpanel.getGraphics(), 0 ,0);
+            nextPiece.draw(midpanel.getGraphics(), 5 ,20);
         }
         else if(player == 2){
-            nextPiece.draw(midpanel.getGraphics(), 10 ,0);
+            nextPiece.draw(midpanel.getGraphics(), 20 ,20);
         }
     }
 
@@ -245,7 +246,6 @@ public class Board extends JPanel implements ActionListener {
     {
         curPiece.setShape(nextPiece.getShape());
         nextPiece.setRandomShape();
-        nextPieceLabel.setText("Next:\n" + nextPiece.getShape().name());
         
         curX = BOARD_WIDTH / 2;
         curY = BOARD_HEIGHT - 1 + curPiece.minY();

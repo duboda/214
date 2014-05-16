@@ -144,6 +144,10 @@ public class Shape {
     public void draw(Graphics g, int startX, int startY){
         int squareWidth = 10;
         int squareHeight = 10;
+        
+        g.setColor(Color.LIGHT_GRAY);
+        g.fillRect((startX-1)*10, (startY)*10, squareWidth*4, squareHeight*4);
+        
         for (int i = 0; i < 4; ++i) {
             int x = startX + this.x(i);
             int y = startY - this.y(i);
