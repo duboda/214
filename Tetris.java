@@ -71,8 +71,8 @@ public class Tetris  {
         
 //        newframe.add(newpanel);
 //        newframe.add(statusbar, BorderLayout.SOUTH);
-        board = new Board(this,1);
-        board2 = new Board(this,2);
+        board = new Board(this,1, newpanel);
+        board2 = new Board(this,2, newpanel);
         
         // add components to frame
         newframe.add(board2);

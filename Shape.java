@@ -6,9 +6,10 @@
 
 package pkgtry;
 
+import java.awt.Color;
 import java.util.Random;
 import java.lang.Math;
-
+import java.awt.Graphics;
 
 public class Shape {
     
@@ -138,5 +139,33 @@ public class Shape {
             result.setY(i, x(i));
         }
         return result;
+    }
+    
+    public void draw(Graphics g, int startX, int startY){
+        int squareWidth = 10;
+        int squareHeight = 10;
+        for (int i = 0; i < 4; ++i) {
+            int x = startX + this.x(i);
+            int y = startY - this.y(i);
+            drawSquare(g, 0 + x * squareWidth,
+                       startY + y * squareHeight,
+                       this.getShape());
+        }
+    }
+    
+    private void drawSquare(Graphics g, int x, int y, Tetrominoes shape)
+    {
+        Color colors[] = { new Color(0, 0, 0), new Color(204, 102, 102), 
+            new Color(102, 204, 102), new Color(102, 102, 204), 
+            new Color(204, 204, 102), new Color(204, 102, 204), 
+            new Color(102, 204, 204), new Color(218, 170, 0)
+        };
+        int squareWidth = 10;
+        int squareHeight = 10;
+
+        Color color = colors[shape.ordinal()];
+
+        g.setColor(color);
+        g.fillRect(x + 1, y + 1, squareWidth-1, squareHeight-1);
     }
 }

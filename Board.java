@@ -39,6 +39,9 @@ public class Board extends JPanel implements ActionListener {
     boolean isPaused = false;
     boolean isSwapped = false;
     
+    // Middle JPanel for drawing next and hold
+    JPanel midpanel;
+    
     // JLabels for middle panel
     JLabel statusbar;
     JLabel nextPieceLabel;
@@ -59,7 +62,7 @@ public class Board extends JPanel implements ActionListener {
      * @param parent parent Tetris canvas
      * @param m player number
      */
-    public Board(Tetris parent, int m) {
+    public Board(Tetris parent, int m, JPanel newpanel) {
        player = m;
        setBorder(BorderFactory.createLoweredBevelBorder());
        setFocusable(true);
@@ -67,6 +70,7 @@ public class Board extends JPanel implements ActionListener {
        nextPiece = new Shape();
        heldPiece = Tetrominoes.NoShape;
        timer = new Timer(400, this);
+       midpanel = newpanel;
        if (m==1){
             statusbar =  parent.player1();
             nextPieceLabel = parent.nextPiece1();
@@ -174,6 +178,12 @@ public class Board extends JPanel implements ActionListener {
                            boardTop + (BOARD_HEIGHT - y - 1) * squareHeight(),
                            curPiece.getShape());
             }
+        }
+        if (player == 1){
+            nextPiece.draw(midpanel.getGraphics(), 0 ,0);
+        }
+        else if(player == 2){
+            nextPiece.draw(midpanel.getGraphics(), 10 ,0);
         }
     }
 
