@@ -90,7 +90,6 @@ public class Tetris  {
 
     public JLabel player1() {return statusbar;}
     public JLabel player2() {return statusbar2;}
-    public void print(){}
     public JLabel nextPiece1() {return nextPiece;}
     public JLabel nextPiece2() {return nextPiece2;}
     
