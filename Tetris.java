@@ -1,15 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package pkgtry;
 
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -21,7 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
-public class Tetris  {
+public class Tetris implements ActionListener{
 
     JLabel statusbar;
     JLabel statusbar2;
@@ -37,18 +33,19 @@ public class Tetris  {
     JPanel newpanel;
     Board board;
     Board board2;    
-//    JFrame newframeL;
+    JButton newgame;
+    JButton homepage;
     public Tetris() {
 //        newframeL = new JFrame("L");
 //        newframeL.setSize(400,800);
         newframe = new JFrame("Quick Start");
 //        setSize(200,400);
 //        newframeL.setVisible(true);
-        newframe.setSize(900,600);
+        newframe.setSize(1200,800);
         newframe.setLayout(new GridLayout(1,3));
         newframe.setVisible(true);
         newpanel = new JPanel();
-        newpanel.setLayout(new GridLayout(4,2));
+        newpanel.setLayout(new GridLayout(4,1));
 //        newpanel.setSize(200, 600);
 //        newpanel.setLayout(new FlowLayout());        
 //        newpanel.setVisible(true);
@@ -64,10 +61,19 @@ public class Tetris  {
         heldPiece = new JLabel("Held:"); heldPiece2 = new JLabel("Held:");
         
         // add all labels to panel
+        
+        
+        newgame = new JButton();
+        homepage = new JButton();
+        newgame.addActionListener(this);
+        homepage.addActionListener(this);
+        homepage.setText("homepage");
+        newgame.setText("try again");
         newpanel.add(statusbar2); newpanel.add(statusbar);
         newpanel.add(nextPiece2); newpanel.add(nextPiece);
         newpanel.add(heldPiece2); newpanel.add(heldPiece);
-        
+        newpanel.add(newgame);
+        newpanel.add(homepage);
         
 //        newframe.add(newpanel);
 //        newframe.add(statusbar, BorderLayout.SOUTH);
@@ -83,18 +89,36 @@ public class Tetris  {
         // start boards
         board.start();
         board2.start();
-        
-        
         newframe.setDefaultCloseOperation(EXIT_ON_CLOSE);
    }
+public void actionPerformed(ActionEvent e) {
+        JButton button = (JButton) e.getSource();
+        if (button.getText().equals("try again")){
+            newframe.dispose();
+            Tetris game = new Tetris();
+            game.newframe.setLocationRelativeTo(null);
+            game.newframe.setVisible(true);
+        }
+        else if (button.getText().equals("homepage")){
+              newframe.dispose();
+              SwingControlDemo  swingControlDemo = new SwingControlDemo("please choose the model");      
+              swingControlDemo.showLabelDemo();
+        }
+   //     button.setText("Successfull");        
+    }        
+
 
     public JLabel player1() {return statusbar;}
     public JLabel player2() {return statusbar2;}
+   
     public JLabel nextPiece1() {return nextPiece;}
     public JLabel nextPiece2() {return nextPiece2;}
     
     public JLabel heldPiece1() {return heldPiece;}
     public JLabel heldPiece2() {return heldPiece2;}
+    
+    public JPanel getpanel(){ return newpanel;}
+
        class TAdapter extends KeyAdapter {
          public void keyPressed(KeyEvent e) {
 
