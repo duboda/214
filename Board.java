@@ -12,12 +12,18 @@ package pkgtry;
  */
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -53,7 +59,9 @@ public class Board extends JPanel implements ActionListener {
     int numLinesRemoved = 0;
     int curX = 0;
     int curY = 0;
-
+    JLabel oppo;
+    JPanel restart;
+    JButton newgame;
     /**
      * Class constructor.
      * @param parent parent Tetris canvas
@@ -67,15 +75,18 @@ public class Board extends JPanel implements ActionListener {
        nextPiece = new Shape();
        heldPiece = Tetrominoes.NoShape;
        timer = new Timer(400, this);
+       restart = parent.getpanel();
        if (m==1){
             statusbar =  parent.player1();
             nextPieceLabel = parent.nextPiece1();
             heldPieceLabel = parent.heldPiece1();
+            oppo = parent.player2();
        }
        if (m==2){
             statusbar = parent.player2();
             nextPieceLabel = parent.nextPiece2();
             heldPieceLabel = parent.heldPiece2();
+            oppo = parent.player1();
        }
        board = new Tetrominoes[BOARD_WIDTH * BOARD_HEIGHT];
 //       if (player == 1){
@@ -87,6 +98,7 @@ public class Board extends JPanel implements ActionListener {
 //            System.out.println("22222222222222222");
 //       }
 //        addKeyListener(new TAdapter());
+
     }
     
     /**
@@ -99,6 +111,7 @@ public class Board extends JPanel implements ActionListener {
             newPiece();
         } else {
             oneLineDown();
+     
         }
     }
 
@@ -156,25 +169,42 @@ public class Board extends JPanel implements ActionListener {
 //        System.out.println("getsize"+kkk);
         int boardTop = (int) size.getHeight() - BOARD_HEIGHT * squareHeight();
 //        System.out.println(boardTop);
+        if (statusbar.getText().equals("game over")){
+            clearBoard();
+            timer.stop();
+            Image buffer=new ImageIcon("/Users/bodadu/study/java/try/lose.png").getImage();
+            g.drawImage(buffer, 0, 0, this.getWidth(), this.getHeight(), this); 
 
-        for (int i = 0; i < BOARD_HEIGHT; ++i) {
-            for (int j = 0; j < BOARD_WIDTH; ++j) {
-                Tetrominoes shape = shapeAt(j, BOARD_HEIGHT - i - 1);
-                if (shape != Tetrominoes.NoShape)
+                        
+        }
+
+        else if (oppo.getText().equals("game over")){
+            clearBoard();
+            timer.stop();  
+            Image buffer=new ImageIcon("/Users/bodadu/study/java/try/win.png").getImage();
+            g.drawImage(buffer, 0, 0, this.getWidth(), this.getHeight(), this);
+        }
+        
+        else {for (int i = 0; i < BOARD_HEIGHT; ++i) {
+                  for (int j = 0; j < BOARD_WIDTH; ++j) {
+                    Tetrominoes shape = shapeAt(j, BOARD_HEIGHT - i - 1);
+                    if (shape != Tetrominoes.NoShape)
                     drawSquare(g, 0 + j * squareWidth(),
                                boardTop + i * squareHeight(), shape);
+                    }
+              }
+
+            if (curPiece.getShape() != Tetrominoes.NoShape) {
+                for (int i = 0; i < 4; ++i) {
+                    int x = curX + curPiece.x(i);
+                    int y = curY - curPiece.y(i);
+                    drawSquare(g, 0 + x * squareWidth(),
+                                boardTop + (BOARD_HEIGHT - y - 1) * squareHeight(),
+                                curPiece.getShape());
             }
+        }
         }
 
-        if (curPiece.getShape() != Tetrominoes.NoShape) {
-            for (int i = 0; i < 4; ++i) {
-                int x = curX + curPiece.x(i);
-                int y = curY - curPiece.y(i);
-                drawSquare(g, 0 + x * squareWidth(),
-                           boardTop + (BOARD_HEIGHT - y - 1) * squareHeight(),
-                           curPiece.getShape());
-            }
-        }
     }
 
 //    private void dropDown()
@@ -193,7 +223,6 @@ public class Board extends JPanel implements ActionListener {
      */
     void oneLineDown()
     {
-        // if piece can no longer be moved down a line, then it is dropped
         if (!tryMove(curPiece, curX, curY - 1))
             pieceDropped();
     }
@@ -244,9 +273,12 @@ public class Board extends JPanel implements ActionListener {
         
         if (!tryMove(curPiece, curX, curY)) {
             curPiece.setShape(Tetrominoes.NoShape);
-            timer.stop();
-            isStarted = false;
+//            timer.stop();
+//            isStarted = false;
+//            clearBoard();
+//            add(lblose);
             statusbar.setText("game over");
+            repaint();
         }
     }
     
@@ -312,11 +344,7 @@ public class Board extends JPanel implements ActionListener {
             repaint();
         }
      }
-    
-    /**
-     * Swaps current piece and held piece
-     */
-    public void hold() {
+ public void hold() {
         // if already swapped then return
         if (isSwapped)
             return;
@@ -336,6 +364,7 @@ public class Board extends JPanel implements ActionListener {
         if (curPiece.getShape() == Tetrominoes.NoShape)
             newPiece();
     }
+    
 
     private void drawSquare(Graphics g, int x, int y, Tetrominoes shape)
     {
@@ -350,17 +379,15 @@ public class Board extends JPanel implements ActionListener {
 
         g.setColor(color);
         g.fillRect(x + 1, y + 1, squareWidth()-1, squareHeight()-1);
-//        System.out.println("width");
-//        System.out.println("height:"+squareHeight());
-//        g.setColor(color.brighter());
-//        g.drawLine(x, y + squareHeight() - 1, x, y);
-//        g.drawLine(x, y, x + squareWidth() - 1, y);
-//
-//        g.setColor(color.darker());
-//        g.drawLine(x + 1, y + squareHeight() - 1,
-//                         x + squareWidth() - 1, y + squareHeight() - 1);
-//        g.drawLine(x + squareWidth() - 1, y + squareHeight() - 1,
-//                         x + squareWidth() - 1, y + 1);
+        g.setColor(color.brighter());
+        g.drawLine(x, y + squareHeight() - 1, x, y);
+        g.drawLine(x, y, x + squareWidth() - 1, y);
+
+        g.setColor(color.darker());
+        g.drawLine(x + 1, y + squareHeight() - 1,
+                         x + squareWidth() - 1, y + squareHeight() - 1);
+        g.drawLine(x + squareWidth() - 1, y + squareHeight() - 1,
+                         x + squareWidth() - 1, y + 1);
 
     }
 

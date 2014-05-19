@@ -56,7 +56,7 @@ public class Tetris implements ActionListener{
         
         
         // create all labels
-        statusbar = new JLabel("0");statusbar2 = new JLabel("0");
+        statusbar = new JLabel("0"); statusbar2 = new JLabel("0");
         nextPiece = new JLabel("Next:"); nextPiece2 = new JLabel("Next:");
         heldPiece = new JLabel("Held:"); heldPiece2 = new JLabel("Held:");
         
@@ -84,11 +84,17 @@ public class Tetris implements ActionListener{
         newframe.add(board2);
         newframe.add(newpanel);
         newframe.add(board);
-       board.addKeyListener(new TAdapter());
-       board2.addKeyListener(new TAdapter());        
+//       board.addKeyListener(new TAdapter());
+        board2.addKeyListener(new TAdapter());
         // start boards
         board.start();
+<<<<<<< HEAD
+        board2.start();         
+        
+        
+=======
         board2.start();
+>>>>>>> dfcbdd842fff905ac56a47799d52b58bc1199a7e
         newframe.setDefaultCloseOperation(EXIT_ON_CLOSE);
    }
 public void actionPerformed(ActionEvent e) {
@@ -141,10 +147,10 @@ public void actionPerformed(ActionEvent e) {
                  return;
 
              switch (keycode) {
-             case 'a':
              case 'A':
+             case 'a':
                  board2.tryMove(board2.curPiece, board2.curX - 1, board2.curY);
-                 break; 
+                 break;
              case 's':
              case 'S':
                  for (int i = 1 ; i<4;i++){

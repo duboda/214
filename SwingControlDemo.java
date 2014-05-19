@@ -49,11 +49,6 @@ public class SwingControlDemo implements ActionListener {
       button1.addActionListener(this);
       button1.setText("Quick Start");
       button2.setText("Time Rush");
-//      label.setText("Welcome.");
-//      label.setOpaque(true);
-//      label.setBackground(Color.GRAY);
-//      label.setForeground(Color.WHITE);
-//      controlPanel.add(label);
       controlPanel.add(button1);
       controlPanel.add(button2);
       mainFrame.setVisible(true);  
