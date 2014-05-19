@@ -172,7 +172,7 @@ public class Board extends JPanel implements ActionListener {
         if (statusbar.getText().equals("game over")){
             clearBoard();
             timer.stop();
-            Image buffer=new ImageIcon("/Users/bodadu/study/java/try/lose.png").getImage();
+            Image buffer=new ImageIcon("src/pkgtry/lose.png").getImage();
             g.drawImage(buffer, 0, 0, this.getWidth(), this.getHeight(), this); 
 
                         
@@ -181,7 +181,7 @@ public class Board extends JPanel implements ActionListener {
         else if (oppo.getText().equals("game over")){
             clearBoard();
             timer.stop();  
-            Image buffer=new ImageIcon("/Users/bodadu/study/java/try/win.png").getImage();
+            Image buffer=new ImageIcon("src/pkgtry/win.png").getImage();
             g.drawImage(buffer, 0, 0, this.getWidth(), this.getHeight(), this);
         }
         
