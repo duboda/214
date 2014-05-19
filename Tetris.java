@@ -59,7 +59,7 @@ public class Tetris  {
         
         
         // create all labels
-        statusbar = new JLabel("0");statusbar2 = new JLabel("0");
+        statusbar = new JLabel("0"); statusbar2 = new JLabel("0");
         nextPiece = new JLabel("Next:"); nextPiece2 = new JLabel("Next:");
         heldPiece = new JLabel("Held:"); heldPiece2 = new JLabel("Held:");
         
@@ -78,11 +78,11 @@ public class Tetris  {
         newframe.add(board2);
         newframe.add(newpanel);
         newframe.add(board);
-       board.addKeyListener(new TAdapter());
-       board2.addKeyListener(new TAdapter());        
+//       board.addKeyListener(new TAdapter());
+        board2.addKeyListener(new TAdapter());
         // start boards
         board.start();
-        board2.start();
+        board2.start();         
         
         
         newframe.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -118,13 +118,15 @@ public class Tetris  {
                  return;
 
              switch (keycode) {
-             case 'a':
              case 'A':
+             case 'a':
                  board2.tryMove(board2.curPiece, board2.curX - 1, board2.curY);
-                 break; 
+                 break;
              case 's':
              case 'S':
-                 board2.oneLineDown();
+                 for (int i = 1 ; i<4;i++){
+                    board2.oneLineDown();
+                 }
                  break;
              case 'd':
              case 'D':
