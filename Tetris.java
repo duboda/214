@@ -77,8 +77,8 @@ public class Tetris implements ActionListener{
         
 //        newframe.add(newpanel);
 //        newframe.add(statusbar, BorderLayout.SOUTH);
-        board = new Board(this,1);
-        board2 = new Board(this,2);
+        board = new Board(this,1, newpanel);
+        board2 = new Board(this,2, newpanel);
         
         // add components to frame
         newframe.add(board2);
@@ -110,7 +110,7 @@ public void actionPerformed(ActionEvent e) {
 
     public JLabel player1() {return statusbar;}
     public JLabel player2() {return statusbar2;}
-   
+    
     public JLabel nextPiece1() {return nextPiece;}
     public JLabel nextPiece2() {return nextPiece2;}
     
