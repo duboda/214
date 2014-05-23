@@ -62,15 +62,15 @@ public class Tetris implements ActionListener{
         nextPiece = new JLabel("Next:"); nextPiece2 = new JLabel("Next:");
         heldPiece = new JLabel("Held:"); heldPiece2 = new JLabel("Held:");
         
-        // add all labels to panel
-        
-        
+        // add buttons
         newGame = new JButton();
         homePage = new JButton();
         newGame.addActionListener(this);
         homePage.addActionListener(this);
         homePage.setText("homepage");
         newGame.setText("try again");
+        
+        // add all labels to panel
         newPanel.add(statusBar2); newPanel.add(statusBar);
         newPanel.add(nextPiece2); newPanel.add(nextPiece);
         newPanel.add(heldPiece2); newPanel.add(heldPiece);
