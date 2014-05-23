@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.util.Random;
 import java.lang.Math;
 import java.awt.Graphics;
+import javax.swing.JFrame;
 
 public class Shape {
     
@@ -140,13 +141,31 @@ public class Shape {
         }
         return result;
     }
-    
+//      private void clearmiddle()
+//    {
+//            int squareWidth = 10;
+//        int squareHeight = 10;   
+//            for (int i = 0; i < 4; ++i){
+//              int x = startX + this.x(i);
+//            int y = startY - this.y(i);
+//            drawSquare(g, 0 + x * squareWidth,
+//                       startY + y * squareHeight,
+//                       Tetrominoes.NoShape);
+//            }
+//    }
     public void draw(Graphics g, int startX, int startY){
         int squareWidth = 10;
         int squareHeight = 10;
         
-        g.setColor(Color.LIGHT_GRAY);
-        g.fillRect((startX-1)*10, (startY)*10, squareWidth*4, squareHeight*4);
+        for (int i = -1; i < 2; ++i) {
+            for (int j = -1; j < 3; ++j) {
+                int x = startX + i;
+                int y = startY - j;
+                drawSquare(g, 0 + x * squareWidth,
+                       startY + y * squareHeight,
+                       Tetrominoes.NoShape);
+            }   
+        }
         
         for (int i = 0; i < 4; ++i) {
             int x = startX + this.x(i);
@@ -159,7 +178,10 @@ public class Shape {
     
     private void drawSquare(Graphics g, int x, int y, Tetrominoes shape)
     {
-        Color colors[] = { new Color(0, 0, 0), new Color(204, 102, 102), 
+        JFrame defaultFrame = new JFrame();
+        Color defaultColor = defaultFrame.getBackground();
+        
+        Color colors[] = { defaultColor, new Color(204, 102, 102), 
             new Color(102, 204, 102), new Color(102, 102, 204), 
             new Color(204, 204, 102), new Color(204, 102, 204), 
             new Color(102, 204, 204), new Color(218, 170, 0)

@@ -64,8 +64,8 @@ public class SwingControlDemo implements ActionListener {
         mainFrame.dispose();
 
         Tetris game = new Tetris();
-        game.newframe.setLocationRelativeTo(null);
-        game.newframe.setVisible(true);
+        game.newFrame.setLocationRelativeTo(null);
+        game.newFrame.setVisible(true);
    //     button.setText("Successfull");        
     }
 }

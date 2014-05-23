@@ -40,13 +40,14 @@ public class Board extends JPanel implements ActionListener {
     Timer timer;
     
     // for gameflow
-    boolean isFallingFinished = false;
-    boolean isStarted = false;
-    boolean isPaused = false;
-    boolean isSwapped = false;
+    boolean isFallingFinished;
+    boolean isStarted;
+    boolean isPaused;
+    boolean isSwapped;
+    boolean heldSwapped;
     
     // Middle JPanel for drawing next and hold
-    JPanel midpanel;
+    JPanel midPanel;
     
     // JLabels for middle panel
     JLabel statusbar;
@@ -56,13 +57,13 @@ public class Board extends JPanel implements ActionListener {
     // variables for game logic
     Shape curPiece;
     Shape nextPiece;
-    Tetrominoes heldPiece;
+    Shape heldPiece;
     Tetrominoes[] board;
     int player = 0;
     int numLinesRemoved = 0;
     int curX = 0;
     int curY = 0;
-    JLabel oppo;
+    JLabel otherPlayer;
     JPanel restart;
     JButton newgame;
     /**
@@ -70,38 +71,36 @@ public class Board extends JPanel implements ActionListener {
      * @param parent parent Tetris canvas
      * @param m player number
      */
-    public Board(Tetris parent, int m, JPanel newpanel) {
+    public Board(Tetris parent, int m, JPanel newPanel) {
        player = m;
        setBorder(BorderFactory.createLoweredBevelBorder());
        setFocusable(true);
        curPiece = new Shape();
        nextPiece = new Shape();
-       heldPiece = Tetrominoes.NoShape;
+       heldPiece = new Shape();
        timer = new Timer(400, this);
-       midpanel = newpanel;
+       midPanel = newPanel;
+       
+       isFallingFinished = false;
+       isStarted = false;
+       isPaused = false;
+       isSwapped = false;
+       heldSwapped = false;
+       
        if (m==1){
             statusbar =  parent.player1();
             nextPieceLabel = parent.nextPiece1();
             heldPieceLabel = parent.heldPiece1();
-            oppo = parent.player2();
+            otherPlayer = parent.player2();
        }
        if (m==2){
             statusbar = parent.player2();
             nextPieceLabel = parent.nextPiece2();
             heldPieceLabel = parent.heldPiece2();
-            oppo = parent.player1();
+            otherPlayer = parent.player1();
        }
+       
        board = new Tetrominoes[BOARD_WIDTH * BOARD_HEIGHT];
-//       if (player == 1){
-//            addKeyListener(new TAdapter1());
-//            System.out.println("111111111111111");
-//       }
-//       if (player == 2){
-//            addKeyListener(new TAdapter2());
-//            System.out.println("22222222222222222");
-//       }
-//        addKeyListener(new TAdapter());
-
     }
     
     /**
@@ -176,25 +175,24 @@ public class Board extends JPanel implements ActionListener {
             timer.stop();
             Image buffer=new ImageIcon("src/pkgtry/lose.png").getImage();
             g.drawImage(buffer, 0, 0, this.getWidth(), this.getHeight(), this); 
-
-                        
         }
 
-        else if (oppo.getText().equals("game over")){
+        else if (otherPlayer.getText().equals("game over")){
             clearBoard();
             timer.stop();  
             Image buffer=new ImageIcon("src/pkgtry/win.png").getImage();
             g.drawImage(buffer, 0, 0, this.getWidth(), this.getHeight(), this);
         }
         
-        else {for (int i = 0; i < BOARD_HEIGHT; ++i) {
+        else {
+            for (int i = 0; i < BOARD_HEIGHT; ++i) {
                   for (int j = 0; j < BOARD_WIDTH; ++j) {
                     Tetrominoes shape = shapeAt(j, BOARD_HEIGHT - i - 1);
                     if (shape != Tetrominoes.NoShape)
                     drawSquare(g, 0 + j * squareWidth(),
                                boardTop + i * squareHeight(), shape);
                     }
-              }
+            }
 
             if (curPiece.getShape() != Tetrominoes.NoShape) {
                 for (int i = 0; i < 4; ++i) {
@@ -203,26 +201,20 @@ public class Board extends JPanel implements ActionListener {
                     drawSquare(g, 0 + x * squareWidth(),
                                 boardTop + (BOARD_HEIGHT - y - 1) * squareHeight(),
                                 curPiece.getShape());
+                }
             }
-        }
-        }
-
-        if (curPiece.getShape() != Tetrominoes.NoShape) {
-            for (int i = 0; i < 4; ++i) {
-                int x = curX + curPiece.x(i);
-                int y = curY - curPiece.y(i);
-                drawSquare(g, 0 + x * squareWidth(),
-                           boardTop + (BOARD_HEIGHT - y - 1) * squareHeight(),
-                           curPiece.getShape());
+            
+            if (player == 2){
+                nextPiece.draw(midPanel.getGraphics(), 10, 30);
+                heldPiece.draw(midPanel.getGraphics(), 10, 45);
+            }
+            else if(player == 1){
+                nextPiece.draw(midPanel.getGraphics(), 30, 30);
+                heldPiece.draw(midPanel.getGraphics(), 30, 45);
             }
         }
         
-        if (player == 1){
-            nextPiece.draw(midpanel.getGraphics(), 5 ,20);
-        }
-        else if(player == 2){
-            nextPiece.draw(midpanel.getGraphics(), 20 ,20);
-        }
+        
     }
 
 //    private void dropDown()
@@ -254,6 +246,7 @@ public class Board extends JPanel implements ActionListener {
         for (int i = 0; i < BOARD_HEIGHT * BOARD_WIDTH; ++i)
             board[i] = Tetrominoes.NoShape;
     }
+  
 
     /**
      * Updates board and creates new piece when old piece hits bottom.
@@ -270,7 +263,7 @@ public class Board extends JPanel implements ActionListener {
         // remove full lines
         removeFullLines();
 
-        
+        // call new piece after last piece has settled
         if (!isFallingFinished)
             newPiece();
     }
@@ -281,14 +274,19 @@ public class Board extends JPanel implements ActionListener {
      */
     private void newPiece()
     {
+        // enable swapping
+        if (curPiece.getShape() != Tetrominoes.NoShape)
+            isSwapped = false;
+        
+        // shift next piece into current piece and randomly create next piece
         curPiece.setShape(nextPiece.getShape());
         nextPiece.setRandomShape();
         
+        // set position of new piece
         curX = BOARD_WIDTH / 2;
         curY = BOARD_HEIGHT - 1 + curPiece.minY();
-
-        isSwapped = false;
         
+        // game over if new piece cannot move
         if (!tryMove(curPiece, curX, curY)) {
             curPiece.setShape(Tetrominoes.NoShape);
 //            timer.stop();
@@ -372,20 +370,41 @@ public class Board extends JPanel implements ActionListener {
             return;
         
         // swap current piece and held and reset to top of board
-        Tetrominoes temp = heldPiece;
-        heldPiece = curPiece.getShape();
+        Tetrominoes temp = heldPiece.getShape();
+        heldPiece.setShape(curPiece.getShape());
         curPiece.setShape(temp);
         curX = BOARD_WIDTH / 2;
         curY = BOARD_HEIGHT - 1 + curPiece.minY();
         isSwapped = true;
                    
         // update piece name in held slot
-        heldPieceLabel.setText("Held:\n" + heldPiece.name());  
+//        heldPieceLabel.setText("Held:\n" + heldPiece.getShape().name());  
                     
         // for first held piece
         if (curPiece.getShape() == Tetrominoes.NoShape)
             newPiece();
     }
+    
+    
+    /**
+     * Takes two boards and swaps their held pieces
+     * @param board 
+     * @param board2 
+     */
+    public void swapHeld(Board otherBoard) {
+        
+        // return if already swapped
+        if (heldSwapped)
+            return;
+        
+        // swap the held pieces between the two boards
+        Tetrominoes temp = heldPiece.getShape();
+        heldPiece.setShape(otherBoard.heldPiece.getShape());
+        otherBoard.heldPiece.setShape(temp);
+        
+        // then disable further swapping
+        //heldSwapped = true;
+    } 
     
 
     private void drawSquare(Graphics g, int x, int y, Tetrominoes shape)
