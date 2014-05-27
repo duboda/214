@@ -187,6 +187,34 @@ public class Tetris implements ActionListener{
                 // do check mode here
                 board.swapHeld(board2);
                 break;
+            case KeyEvent.VK_1:
+                if (board2.numLinesRemoved>=2){
+                    board.up();
+                    board2.numLinesRemoved = board2.numLinesRemoved-2;
+                    board2.statusbar.setText(String.valueOf(board2.numLinesRemoved));                    
+                }
+                break;
+            case KeyEvent.VK_2:
+                if (board2.numLinesRemoved>=2){
+                    board.fast();
+                    board2.numLinesRemoved = board2.numLinesRemoved-2;
+                    board2.statusbar.setText(String.valueOf(board2.numLinesRemoved));                    
+                }
+                break;                
+            case KeyEvent.VK_COMMA:
+                if (board.numLinesRemoved>=2){
+                    board2.up();
+                    board.numLinesRemoved = board.numLinesRemoved-2;
+                    board.statusbar.setText(String.valueOf(board.numLinesRemoved));                    
+                }
+                break;
+            case KeyEvent.VK_PERIOD:
+                if (board.numLinesRemoved>=2){
+                    board2.fast();
+                    board.numLinesRemoved = board.numLinesRemoved-2;
+                    board.statusbar.setText(String.valueOf(board.numLinesRemoved));                    
+                }
+                break;                  
             }
         }
     }

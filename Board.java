@@ -217,16 +217,6 @@ public class Board extends JPanel implements ActionListener {
         
     }
 
-//    private void dropDown()
-//    {
-//        int newY = curY;
-//        while (newY > 0) {
-//            if (!tryMove(curPiece, curX, newY - 1))
-//                break;
-//            --newY;
-//        }
-//        pieceDropped();
-//    }
 
     /**
      * Moves current piece down one line.
@@ -430,6 +420,32 @@ public class Board extends JPanel implements ActionListener {
         g.drawLine(x + squareWidth() - 1, y + squareHeight() - 1,
                          x + squareWidth() - 1, y + 1);
 
+    }
+    
+    public void up(){
+        Shape temp = new Shape();
+        for (int k = BOARD_HEIGHT-1; k > 0; k--) {
+                for (int j = 0; j < BOARD_WIDTH; ++j)
+                    board[(k * BOARD_WIDTH) + j] = shapeAt(j, k - 1);
+                }
+        int k = (int)(10*Math.random());
+//        System.out.println(k);
+        for (int j = 0; j<BOARD_WIDTH;++j){
+            temp.setRandomShape();
+            if (j!=k)
+                board[j] = temp.getShape();
+            else
+                board[j] = Tetrominoes.NoShape;
+        }
+    }
+    public void fast(){
+        int newY = curY;
+        while (newY > 0) {
+            if (!tryMove(curPiece, curX, newY - 1))
+                break;
+            --newY;
+        }
+        pieceDropped();   
     }
 
 
