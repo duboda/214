@@ -11,6 +11,9 @@ public class SwingControlDemo implements ActionListener {
    private JLabel headerLabel;
    private JLabel statusLabel;
    private JPanel controlPanel;
+   private JPanel buttonPanel;
+
+   
    String text;
    public SwingControlDemo(String m){
        text = m;
@@ -33,6 +36,10 @@ public class SwingControlDemo implements ActionListener {
 //      statusLabel.setSize(350,100);
       controlPanel = new JPanel();
       controlPanel.setLayout(new FlowLayout());
+      
+      buttonPanel = new JPanel();
+      buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+      controlPanel.add(buttonPanel);
 
       mainFrame.add(headerLabel);
       mainFrame.add(controlPanel);
@@ -46,12 +53,20 @@ public class SwingControlDemo implements ActionListener {
 //      JLabel label  = new JLabel("", JLabel.CENTER); 
       JButton button1 = new JButton();
       JButton button2 = new JButton();
-      button1.setText("Quick Start");
-      button2.setText("Time Rush");
+      JButton button3 = new JButton();
+      
+      button1.setText("Competitive");
+      button2.setText("Cooperative");
+      button3.setText("Quick Start");
+      
       button1.addActionListener(this);
       button2.addActionListener(this);
-      controlPanel.add(button1);
-      controlPanel.add(button2);
+      button3.addActionListener(this);
+      
+      buttonPanel.add(button1);
+      buttonPanel.add(button2);
+      buttonPanel.add(button3);
+      
       mainFrame.setVisible(true);  
    }
 
@@ -66,10 +81,12 @@ public class SwingControlDemo implements ActionListener {
         
         Tetris game;
         
-        if (button.getText().equals("Quick Start"))
+        if (button.getText().equals("Competitive"))
             game = new Competitive();
-        else
+        else if (button.getText().equals("Cooperative"))
             game = new Cooperative();
+        else
+            game = new QuickStart();
         
         game.newFrame.setLocationRelativeTo(null);
         game.newFrame.setVisible(true);
