@@ -396,16 +396,36 @@ public class Board extends JPanel implements ActionListener {
         //heldSwapped = true;
     } 
     
+    public void up(){
+        //Shape temp = new Shape();
+        //temp.setShape(Tetrominoes.GrayShape);
+        
+        for (int k = BOARD_HEIGHT-1; k > 0; k--) {
+                for (int j = 0; j < BOARD_WIDTH; ++j)
+                    board[(k * BOARD_WIDTH) + j] = shapeAt(j, k - 1);
+                }
+        int k = (int)(BOARD_WIDTH * Math.random());
+//        System.out.println(k);
+        for (int j = 0; j<BOARD_WIDTH;++j){
+            if (j!=k)
+                board[j] = Tetrominoes.GrayShape;
+            else
+                board[j] = Tetrominoes.NoShape;
+        }
+    }
+    public void fast(){
+        int newY = curY;
+        while (newY > 0) {
+            if (!tryMove(curPiece, curX, newY - 1))
+                break;
+            --newY;
+        }
+        pieceDropped();   
+    }
+    
 
     private void drawSquare(Graphics g, int x, int y, Tetrominoes shape)
     {
-        Color colors[] = { new Color(0, 0, 0), new Color(204, 102, 102), 
-            new Color(102, 204, 102), new Color(102, 102, 204), 
-            new Color(204, 204, 102), new Color(204, 102, 204), 
-            new Color(102, 204, 204), new Color(218, 170, 0)
-        };
-
-
         Color color = colors[shape.ordinal()];
 
         g.setColor(color);
@@ -421,32 +441,17 @@ public class Board extends JPanel implements ActionListener {
                          x + squareWidth() - 1, y + 1);
 
     }
-    
-    public void up(){
-        Shape temp = new Shape();
-        for (int k = BOARD_HEIGHT-1; k > 0; k--) {
-                for (int j = 0; j < BOARD_WIDTH; ++j)
-                    board[(k * BOARD_WIDTH) + j] = shapeAt(j, k - 1);
-                }
-        int k = (int)(10*Math.random());
-//        System.out.println(k);
-        for (int j = 0; j<BOARD_WIDTH;++j){
-            temp.setRandomShape();
-            if (j!=k)
-                board[j] = temp.getShape();
-            else
-                board[j] = Tetrominoes.NoShape;
-        }
-    }
-    public void fast(){
-        int newY = curY;
-        while (newY > 0) {
-            if (!tryMove(curPiece, curX, newY - 1))
-                break;
-            --newY;
-        }
-        pieceDropped();   
-    }
 
+
+    private static final Color colors[] = { 
+        new Color(255, 255, 255), new Color(204, 102, 102), 
+        new Color(102, 204, 102), new Color(102, 102, 204), 
+        new Color(204, 204, 102), new Color(204, 102, 204), 
+        new Color(102, 204, 204), new Color(218, 170,   0),
+        new Color(100, 100, 100)
+    };
+
+
+        
 
 }

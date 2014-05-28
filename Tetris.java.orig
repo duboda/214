@@ -129,6 +129,7 @@ public class Tetris implements ActionListener{
     
     public JPanel getpanel(){ return newPanel;}
 
+<<<<<<< HEAD
     class TAdapter extends KeyAdapter {
          
         public void keyPressed(KeyEvent e) {
@@ -225,7 +226,7 @@ public class Tetris implements ActionListener{
             }
         }
     }
-
+=======
 //    class TAdapter extends KeyAdapter {
 //         
 //        public void keyPressed(KeyEvent e) {
@@ -294,4 +295,5 @@ public class Tetris implements ActionListener{
 //            }
 //        }
 //    }
+>>>>>>> modes
 }

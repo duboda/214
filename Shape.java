@@ -16,18 +16,28 @@ public class Shape {
     
     // Tetromino type reference
     enum Tetrominoes { NoShape, ZShape, SShape, LineShape, 
-               TShape, SquareShape, LShape, MirroredLShape };
+               TShape, SquareShape, LShape, MirroredLShape, GrayShape};
     // Tetromino shape coordinates reference table
     private static final int[][][] coordsTable = new int[][][] {
-            { { 0, 0 },   { 0, 0 },   { 0, 0 },   { 0, 0 } },
-            { { 0, -1 },  { 0, 0 },   { -1, 0 },  { -1, 1 } },
-            { { 0, -1 },  { 0, 0 },   { 1, 0 },   { 1, 1 } },
-            { { 0, -1 },  { 0, 0 },   { 0, 1 },   { 0, 2 } },
-            { { -1, 0 },  { 0, 0 },   { 1, 0 },   { 0, 1 } },
-            { { 0, 0 },   { 1, 0 },   { 0, 1 },   { 1, 1 } },
-            { { -1, -1 }, { 0, -1 },  { 0, 0 },   { 0, 1 } },
-            { { 1, -1 },  { 0, -1 },  { 0, 0 },   { 0, 1 } }
+            { {  0,  0 },  {  0,  0 },  {  0,  0 },  {  0,  0 } },
+            { {  0, -1 },  {  0,  0 },  { -1,  0 },  { -1,  1 } },
+            { {  0, -1 },  {  0,  0 },  {  1,  0 },  {  1,  1 } },
+            { {  0, -1 },  {  0,  0 },  {  0,  1 },  {  0,  2 } },
+            { { -1,  0 },  {  0,  0 },  {  1,  0 },  {  0,  1 } },
+            { {  0,  0 },  {  1,  0 },  {  0,  1 },  {  1,  1 } },
+            { { -1, -1 },  {  0, -1 },  {  0,  0 },  {  0,  1 } },
+            { {  1, -1 },  {  0, -1 },  {  0,  0 },  {  0,  1 } }
         };
+    
+    // color table reference
+    private static JFrame defaultFrame = new JFrame();
+    private static Color defaultColor = defaultFrame.getBackground();
+    private static final Color colors[] = { 
+        defaultColor,             new Color(204, 102, 102), 
+        new Color(102, 204, 102), new Color(102, 102, 204), 
+        new Color(204, 204, 102), new Color(204, 102, 204), 
+        new Color(102, 204, 204), new Color(218, 170, 0)
+    };
     
     // Tetromino type
     private Tetrominoes pieceShape;
@@ -178,14 +188,6 @@ public class Shape {
     
     private void drawSquare(Graphics g, int x, int y, Tetrominoes shape)
     {
-        JFrame defaultFrame = new JFrame();
-        Color defaultColor = defaultFrame.getBackground();
-        
-        Color colors[] = { defaultColor, new Color(204, 102, 102), 
-            new Color(102, 204, 102), new Color(102, 102, 204), 
-            new Color(204, 204, 102), new Color(204, 102, 204), 
-            new Color(102, 204, 204), new Color(218, 170, 0)
-        };
         int squareWidth = 10;
         int squareHeight = 10;
 

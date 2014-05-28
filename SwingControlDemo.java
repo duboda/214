@@ -46,9 +46,10 @@ public class SwingControlDemo implements ActionListener {
 //      JLabel label  = new JLabel("", JLabel.CENTER); 
       JButton button1 = new JButton();
       JButton button2 = new JButton();
-      button1.addActionListener(this);
       button1.setText("Quick Start");
       button2.setText("Time Rush");
+      button1.addActionListener(this);
+      button2.addActionListener(this);
       controlPanel.add(button1);
       controlPanel.add(button2);
       mainFrame.setVisible(true);  
@@ -62,8 +63,14 @@ public class SwingControlDemo implements ActionListener {
         controlPanel.setVisible(false);
 //        mainFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE );
         mainFrame.dispose();
-
-        Tetris game = new Tetris();
+        
+        Tetris game;
+        
+        if (button.getText().equals("Quick Start"))
+            game = new Competitive();
+        else
+            game = new Cooperative();
+        
         game.newFrame.setLocationRelativeTo(null);
         game.newFrame.setVisible(true);
    //     button.setText("Successfull");        
