@@ -28,6 +28,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import pkgtry.Shape.Tetrominoes;
+import quicktime.QTUnknownOSException;
 
 
 public class Board extends JPanel implements ActionListener {
@@ -35,6 +36,7 @@ public class Board extends JPanel implements ActionListener {
     // constants defining board
     static final int BOARD_WIDTH = 10;
     static final int BOARD_HEIGHT = 20;
+    static enum MODE {QKST, COMP, COOP};
     
     // Timer
     Timer timer;
@@ -55,15 +57,16 @@ public class Board extends JPanel implements ActionListener {
     JLabel heldPieceLabel;
     
     // variables for game logic
+    MODE mode;
     Shape curPiece;
     Shape nextPiece;
     Shape heldPiece;
     Tetrominoes[] board;
+    Board otherBoard;
     int player = 0;
     int numLinesRemoved = 0;
     int curX = 0;
     int curY = 0;
-    JLabel otherPlayer;
     JPanel restart;
     JButton newgame;
     /**
@@ -71,7 +74,7 @@ public class Board extends JPanel implements ActionListener {
      * @param parent parent Tetris canvas
      * @param m player number
      */
-    public Board(Tetris parent, int m, JPanel newPanel) {
+    public Board(Tetris parent, int m, JPanel newPanel, MODE mode) {
        player = m;
        setBorder(BorderFactory.createLoweredBevelBorder());
        setFocusable(true);
@@ -80,6 +83,7 @@ public class Board extends JPanel implements ActionListener {
        heldPiece = new Shape();
        timer = new Timer(400, this);
        midPanel = newPanel;
+       this.mode = mode;
        
        isFallingFinished = false;
        isStarted = false;
@@ -91,13 +95,11 @@ public class Board extends JPanel implements ActionListener {
             statusbar =  parent.player1();
             nextPieceLabel = parent.nextPiece1();
             heldPieceLabel = parent.heldPiece1();
-            otherPlayer = parent.player2();
        }
        if (m==2){
             statusbar = parent.player2();
             nextPieceLabel = parent.nextPiece2();
             heldPieceLabel = parent.heldPiece2();
-            otherPlayer = parent.player1();
        }
        
        board = new Tetrominoes[BOARD_WIDTH * BOARD_HEIGHT];
@@ -115,11 +117,15 @@ public class Board extends JPanel implements ActionListener {
             oneLineDown();
         }
     }
-
+    
+    public void setOtherBoard(Board otherBoard){ this.otherBoard = otherBoard;};
+    public Tetrominoes[] getBoard(){ return board;};
+    public JLabel getStatusbar(){ return statusbar;};
     int squareWidth() { return (int) getWidth() / BOARD_WIDTH; }
     int squareHeight() {return (int) getHeight() / BOARD_HEIGHT; }
     Tetrominoes shapeAt(int x, int y) { return board[(y * BOARD_WIDTH) + x]; }
-
+    
+    
     /**
      * Starts game.
      */
@@ -156,6 +162,14 @@ public class Board extends JPanel implements ActionListener {
         }
         repaint();
     }
+    
+    /**
+     * Stops board
+     */
+    public void stop(){
+        timer.stop();
+        clearBoard();
+    }
 
     /**
      * 
@@ -170,25 +184,17 @@ public class Board extends JPanel implements ActionListener {
 //        System.out.println("getsize"+kkk);
         int boardTop = (int) size.getHeight() - BOARD_HEIGHT * squareHeight();
 //        System.out.println(boardTop);
-        if (statusbar.getText().equals("game over")){
-            clearBoard();
-            timer.stop();
-            Image buffer=new ImageIcon("src/pkgtry/lose.png").getImage();
-            g.drawImage(buffer, 0, 0, this.getWidth(), this.getHeight(), this); 
+        if (statusbar.getText().equals("Game Over")){
+            this.drawLose(g);
         }
-
-        else if (otherPlayer.getText().equals("game over")){
-            clearBoard();
-            timer.stop();  
-            Image buffer=new ImageIcon("src/pkgtry/win.png").getImage();
-            g.drawImage(buffer, 0, 0, this.getWidth(), this.getHeight(), this);
+        else if (statusbar.getText().equals("You Win")){
+            this.drawWin(g);
         }
-        
         else {
             for (int i = 0; i < BOARD_HEIGHT; ++i) {
                   for (int j = 0; j < BOARD_WIDTH; ++j) {
                     Tetrominoes shape = shapeAt(j, BOARD_HEIGHT - i - 1);
-                    if (shape != Tetrominoes.NoShape)
+                    //if (shape != Tetrominoes.NoShape)
                     drawSquare(g, 0 + j * squareWidth(),
                                boardTop + i * squareHeight(), shape);
                     }
@@ -213,9 +219,17 @@ public class Board extends JPanel implements ActionListener {
                 heldPiece.draw(midPanel.getGraphics(), 30, 45);
             }
         }
-        
-        
     }
+    
+    public void drawLose(Graphics g){
+        Image buffer=new ImageIcon("src/pkgtry/lose.png").getImage();
+        g.drawImage(buffer, 0, 0, this.getWidth(), this.getHeight(), this); 
+    };
+    
+    public void drawWin(Graphics g){
+        Image buffer=new ImageIcon("src/pkgtry/win.png").getImage();
+        g.drawImage(buffer, 0, 0, this.getWidth(), this.getHeight(), this); 
+    };
 
 
     /**
@@ -273,18 +287,26 @@ public class Board extends JPanel implements ActionListener {
         nextPiece.setRandomShape();
         
         // set position of new piece
-        curX = BOARD_WIDTH / 2;
+        curX = BOARD_WIDTH / 2 - 1;
         curY = BOARD_HEIGHT - 1 + curPiece.minY();
         
         // game over if new piece cannot move
         if (!tryMove(curPiece, curX, curY)) {
             curPiece.setShape(Tetrominoes.NoShape);
-//            timer.stop();
-//            isStarted = false;
-//            clearBoard();
-//            add(lblose);
-            statusbar.setText("game over");
+            
+            // stop both boards
+            this.stop();
+            otherBoard.stop();
+            
+            statusbar.setText("Game Over");
+            
+            if (mode == MODE.COOP)
+                otherBoard.getStatusbar().setText("Game Over");
+            else
+                otherBoard.getStatusbar().setText("You Win");
+            
             repaint();
+            otherBoard.repaint();
         }
     }
     
@@ -324,20 +346,43 @@ public class Board extends JPanel implements ActionListener {
         for (int i = BOARD_HEIGHT - 1; i >= 0; --i) {
             boolean lineIsFull = true;
             
-            // check if line has a gap
-            for (int j = 0; j < BOARD_WIDTH; ++j) {
-                if (shapeAt(j, i) == Tetrominoes.NoShape) {
-                    lineIsFull = false;
-                    break;
+            if (mode == MODE.COOP) {
+                // check if line has a gap
+                for (int j = 0; j < BOARD_WIDTH; ++j) {
+                    if ((shapeAt(j, i) == Tetrominoes.NoShape)
+                            || (otherBoard.shapeAt(j, i) == Tetrominoes.NoShape)) {
+                        lineIsFull = false;
+                        break;
+                    }
+                }
+
+                // copy everything above full line down one line
+                if (lineIsFull) {
+                    ++numFullLines;
+                    for (int k = i; k < BOARD_HEIGHT - 1; ++k) {
+                        for (int j = 0; j < BOARD_WIDTH; ++j) {
+                             board[(k * BOARD_WIDTH) + j] = shapeAt(j, k + 1);
+                             otherBoard.getBoard()[(k * BOARD_WIDTH) + j] = otherBoard.shapeAt(j, k + 1);
+                        }
+                    }
                 }
             }
-            
-            // copy everything above full line down one line
-            if (lineIsFull) {
-                ++numFullLines;
-                for (int k = i; k < BOARD_HEIGHT - 1; ++k) {
-                    for (int j = 0; j < BOARD_WIDTH; ++j)
-                         board[(k * BOARD_WIDTH) + j] = shapeAt(j, k + 1);
+            else {
+                // check if line has a gap
+                for (int j = 0; j < BOARD_WIDTH; ++j) {
+                    if (shapeAt(j, i) == Tetrominoes.NoShape) {
+                        lineIsFull = false;
+                        break;
+                    }
+                }
+
+                // copy everything above full line down one line
+                if (lineIsFull) {
+                    ++numFullLines;
+                    for (int k = i; k < BOARD_HEIGHT - 1; ++k) {
+                        for (int j = 0; j < BOARD_WIDTH; ++j)
+                             board[(k * BOARD_WIDTH) + j] = shapeAt(j, k + 1);
+                    }
                 }
             }
         }
@@ -444,7 +489,7 @@ public class Board extends JPanel implements ActionListener {
 
 
     private static final Color colors[] = { 
-        new Color(255, 255, 255), new Color(204, 102, 102), 
+        new Color( 50,  50,  50), new Color(204, 102, 102), 
         new Color(102, 204, 102), new Color(102, 102, 204), 
         new Color(204, 204, 102), new Color(204, 102, 204), 
         new Color(102, 204, 204), new Color(218, 170,   0),

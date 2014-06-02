@@ -20,13 +20,13 @@ public class Shape {
     // Tetromino shape coordinates reference table
     private static final int[][][] coordsTable = new int[][][] {
             { {  0,  0 },  {  0,  0 },  {  0,  0 },  {  0,  0 } },
-            { {  0, -1 },  {  0,  0 },  { -1,  0 },  { -1,  1 } },
-            { {  0, -1 },  {  0,  0 },  {  1,  0 },  {  1,  1 } },
-            { {  0, -1 },  {  0,  0 },  {  0,  1 },  {  0,  2 } },
+            { { -1,  0 },  {  0,  0 },  {  0,  1 },  {  1,  1 } },
+            { {  1,  0 },  {  0,  0 },  {  0,  1 },  { -1,  1 } },
+            { { -1,  0 },  {  0,  0 },  {  1,  0 },  {  2,  0 } },
             { { -1,  0 },  {  0,  0 },  {  1,  0 },  {  0,  1 } },
             { {  0,  0 },  {  1,  0 },  {  0,  1 },  {  1,  1 } },
-            { { -1, -1 },  {  0, -1 },  {  0,  0 },  {  0,  1 } },
-            { {  1, -1 },  {  0, -1 },  {  0,  0 },  {  0,  1 } }
+            { { -1,  1 },  { -1,  0 },  {  0,  0 },  {  1,  0 } },
+            { { -1,  0 },  {  0,  0 },  {  1,  0 },  {  1,  1 } }
         };
     
     // color table reference
@@ -167,8 +167,8 @@ public class Shape {
         int squareWidth = 10;
         int squareHeight = 10;
         
-        for (int i = -1; i < 2; ++i) {
-            for (int j = -1; j < 3; ++j) {
+        for (int i = -1; i < 3; ++i) {
+            for (int j = -1; j < 2; ++j) {
                 int x = startX + i;
                 int y = startY - j;
                 drawSquare(g, 0 + x * squareWidth,

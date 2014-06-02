@@ -2,6 +2,7 @@ package pkgtry;
 
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -15,6 +16,7 @@ import javax.swing.JFrame;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import pkgtry.Shape.Tetrominoes;
 
 
@@ -31,14 +33,14 @@ public class Tetris implements ActionListener{
     JLabel heldPiece2;
     
     JFrame newFrame;
-    JPanel newPanel;
+    JPanel midPanel;
     Board board;
     Board board2;    
     JButton newGame;
     JButton homePage;
     
     
-    public Tetris() {
+    public Tetris(Board.MODE mode) {
 //        newframeL = new JFrame("L");
 //        newframeL.setSize(400,800);
         newFrame = new JFrame();
@@ -47,45 +49,50 @@ public class Tetris implements ActionListener{
         newFrame.setSize(1200,800);
         newFrame.setLayout(new GridLayout(1,3));
         newFrame.setVisible(true);
-        newPanel = new JPanel();
-        newPanel.setLayout(new GridLayout(4,1));
-//        newPanel.setSize(200, 600);
-//        newPanel.setLayout(new FlowLayout());        
-//        newPanel.setVisible(true);
-//        newframeL.add(newPanel);
+        midPanel = new JPanel();
+        midPanel.setLayout(new GridLayout(4,2));
+//        midPanel.setSize(200, 600);
+//        midPanel.setLayout(new FlowLayout());        
+//        midPanel.setVisible(true);
+//        newframeL.add(midPanel);
 //        JButton button1 = new JButton();
 //        button1.setText("try");
-//        newPanel.add(button1);
+//        midPanel.add(button1);
         
        
         // create all labels
-        statusBar = new JLabel("0"); statusBar2 = new JLabel("0");
+        statusBar = new JLabel("0", SwingConstants.CENTER); statusBar2 = new JLabel("0", SwingConstants.CENTER);
         nextPiece = new JLabel("Next:"); nextPiece2 = new JLabel("Next:");
         heldPiece = new JLabel("Held:"); heldPiece2 = new JLabel("Held:");
+        
+        
         
         // add buttons
         newGame = new JButton();
         homePage = new JButton();
         newGame.addActionListener(this);
         homePage.addActionListener(this);
-        homePage.setText("homepage");
-        newGame.setText("try again");
+        homePage.setText("Homepage");
+        newGame.setText("Try Again");
         
         // add all labels to panel
-        newPanel.add(statusBar2); newPanel.add(statusBar);
-        newPanel.add(nextPiece2); newPanel.add(nextPiece);
-        newPanel.add(heldPiece2); newPanel.add(heldPiece);
-        newPanel.add(newGame);
-        newPanel.add(homePage);
+        midPanel.add(statusBar2); midPanel.add(statusBar);
+        midPanel.add(nextPiece2); midPanel.add(nextPiece);
+        midPanel.add(heldPiece2); midPanel.add(heldPiece);
+        midPanel.add(newGame);
+        midPanel.add(homePage);
         
-//        newFrame.add(newPanel);
+//        newFrame.add(midPanel);
 //        newFrame.add(statusBar, BorderLayout.SOUTH);
-        board = new Board(this,1, newPanel);
-        board2 = new Board(this,2, newPanel);
+        board = new Board(this,1, midPanel, mode);
+        board2 = new Board(this,2, midPanel, mode);
+        
+        board.setOtherBoard(board2);
+        board2.setOtherBoard(board);
         
         // add components to frame
         newFrame.add(board2);
-        newFrame.add(newPanel);
+        newFrame.add(midPanel);
         newFrame.add(board);
 //        board.addKeyListener(new TAdapter());
 //        board2.addKeyListener(new TAdapter());        
@@ -127,7 +134,7 @@ public class Tetris implements ActionListener{
     public JLabel heldPiece1() {return heldPiece;}
     public JLabel heldPiece2() {return heldPiece2;}
     
-    public JPanel getpanel(){ return newPanel;}
+    public JPanel getpanel(){ return midPanel;}
 
     class TAdapter extends KeyAdapter {
          

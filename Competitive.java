@@ -21,7 +21,7 @@ public class Competitive extends Tetris {
      * Class constructor.
      */
     public Competitive() {
-        super();
+        super(Board.MODE.COMP);
         newFrame.setTitle("Competitive Mode");
         board.addKeyListener(new TAdapter());
         board2.addKeyListener(new TAdapter());
@@ -30,7 +30,7 @@ public class Competitive extends Tetris {
     
     public void actionPerformed(ActionEvent e) {
         JButton button = (JButton) e.getSource();
-        if (button.getText().equals("try again")){
+        if (button.getText().equals("Try Again")){
             newFrame.dispose();
             
             Competitive game = new Competitive();
@@ -38,7 +38,7 @@ public class Competitive extends Tetris {
             game.newFrame.setLocationRelativeTo(null);
             game.newFrame.setVisible(true);
         }
-        else if (button.getText().equals("homepage")){
+        else if (button.getText().equals("Homepage")){
               newFrame.dispose();
               SwingControlDemo  swingControlDemo = new SwingControlDemo("please choose the model");      
               swingControlDemo.showLabelDemo();

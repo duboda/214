@@ -21,7 +21,7 @@ public class QuickStart extends Tetris {
      * Class constructor.
      */
     public QuickStart() {
-        super();
+        super(Board.MODE.QKST);
         newFrame.setTitle("Quick Start");
         board.addKeyListener(new TAdapter());
         board2.addKeyListener(new TAdapter());
@@ -30,7 +30,7 @@ public class QuickStart extends Tetris {
     
     public void actionPerformed(ActionEvent e) {
         JButton button = (JButton) e.getSource();
-        if (button.getText().equals("try again")){
+        if (button.getText().equals("Try Again")){
             newFrame.dispose();
             
             QuickStart game = new QuickStart();
@@ -38,7 +38,7 @@ public class QuickStart extends Tetris {
             game.newFrame.setLocationRelativeTo(null);
             game.newFrame.setVisible(true);
         }
-        else if (button.getText().equals("homepage")){
+        else if (button.getText().equals("Homepage")){
               newFrame.dispose();
               SwingControlDemo  swingControlDemo = new SwingControlDemo("please choose the model");      
               swingControlDemo.showLabelDemo();

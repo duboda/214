@@ -55,9 +55,9 @@ public class SwingControlDemo implements ActionListener {
       JButton button2 = new JButton();
       JButton button3 = new JButton();
       
-      button1.setText("Competitive");
-      button2.setText("Cooperative");
-      button3.setText("Quick Start");
+      button1.setText("Quick Start");
+      button2.setText("Competitive");
+      button3.setText("Cooperative");
       
       button1.addActionListener(this);
       button2.addActionListener(this);
