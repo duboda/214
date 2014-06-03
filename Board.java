@@ -61,14 +61,24 @@ public class Board extends JPanel implements ActionListener {
     Shape curPiece;
     Shape nextPiece;
     Shape heldPiece;
+    createpiece newpiece;
     Tetrominoes[] board;
     Board otherBoard;
     int player = 0;
     int numLinesRemoved = 0;
     int curX = 0;
     int curY = 0;
+    
+    int leftnumber = 20;
+    boolean isSpedUp = false;
+    
     JPanel restart;
+    JLabel leftpiece;
+    JLabel otherpiece;
     JButton newgame;
+    JLabel roundlabel;
+    int round = 1;
+    int speed=400;
     /**
      * Class constructor.
      * @param parent parent Tetris canvas
@@ -81,7 +91,7 @@ public class Board extends JPanel implements ActionListener {
        curPiece = new Shape();
        nextPiece = new Shape();
        heldPiece = new Shape();
-       timer = new Timer(400, this);
+       timer = new Timer(speed, this);
        midPanel = newPanel;
        this.mode = mode;
        
@@ -91,18 +101,31 @@ public class Board extends JPanel implements ActionListener {
        isSwapped = false;
        heldSwapped = false;
        
+       if (mode == MODE.COMP){
+            newpiece = new createpiece();
+            newpiece = parent.list();
+       }
+       
+       roundlabel = parent.round();
        if (m==1){
             statusbar =  parent.player1();
             nextPieceLabel = parent.nextPiece1();
             heldPieceLabel = parent.heldPiece1();
+            
+            leftpiece = parent.leftpiece1();
+            otherpiece = parent.leftpiece2();
        }
        if (m==2){
             statusbar = parent.player2();
             nextPieceLabel = parent.nextPiece2();
             heldPieceLabel = parent.heldPiece2();
+
+            leftpiece = parent.leftpiece2();
+            otherpiece = parent.leftpiece1();
        }
        
        board = new Tetrominoes[BOARD_WIDTH * BOARD_HEIGHT];
+
     }
     
     /**
@@ -139,7 +162,11 @@ public class Board extends JPanel implements ActionListener {
         numLinesRemoved = 0;
         clearBoard();
         
-        nextPiece.setRandomShape();
+        if (mode == MODE.COMP)
+            nextPiece = newpiece.nextpiece[0];
+        else
+            nextPiece.setRandomShape();
+        
         newPiece();
         timer.start();
     }
@@ -184,8 +211,24 @@ public class Board extends JPanel implements ActionListener {
 //        System.out.println("getsize"+kkk);
         int boardTop = (int) size.getHeight() - BOARD_HEIGHT * squareHeight();
 //        System.out.println(boardTop);
+
+        if (mode == MODE.COMP){
+            if ((otherpiece.getText().equals("1"))&&!isSpedUp){
+                leftnumber = 20;
+                leftpiece.setText(String.valueOf(leftnumber));
+                up();
+                timer.stop();
+                speed *= 0.7;
+                isSpedUp = true;
+                timer = new Timer(speed,this);
+                timer.start();
+
+            }
+        }
+        
         if (statusbar.getText().equals("Game Over")){
             this.drawLose(g);
+        
         }
         else if (statusbar.getText().equals("You Win")){
             this.drawWin(g);
@@ -276,15 +319,43 @@ public class Board extends JPanel implements ActionListener {
      * Creates a new piece at the top of the board if possible, otherwise game
      * over.
      */
+
     private void newPiece()
     {
         // enable swapping
         if (curPiece.getShape() != Tetrominoes.NoShape)
             isSwapped = false;
         
-        // shift next piece into current piece and randomly create next piece
-        curPiece.setShape(nextPiece.getShape());
-        nextPiece.setRandomShape();
+        if (mode == MODE.COMP) {
+            if (leftpiece.getText().equals("1")){
+                newpiece.createpiece();           
+                leftnumber=20;
+                timer.stop();
+                speed *= 0.7;
+                timer = new Timer(speed,this);
+                timer.start();
+                round = Integer.parseInt(roundlabel.getText());
+                round++;
+                roundlabel.setText(String.valueOf(round));
+                
+                isSpedUp = false;
+            }
+            
+            // shift next piece into current piece and randomly create next piece
+            curPiece.setShape(nextPiece.getShape());
+
+            leftpiece.setText(String.valueOf(leftnumber));
+            leftnumber -= 1;
+            nextPiece = newpiece.nextpiece[20-leftnumber]; 
+        }
+        else {
+            // shift next piece into current piece and randomly create next piece
+            curPiece.setShape(nextPiece.getShape());
+            nextPiece.setRandomShape();
+        }
+            
+            
+               
         
         // set position of new piece
         curX = BOARD_WIDTH / 2 - 1;

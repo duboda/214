@@ -30,7 +30,7 @@ public class QuickStart extends Tetris {
     
     public void actionPerformed(ActionEvent e) {
         JButton button = (JButton) e.getSource();
-        if (button.getText().equals("Try Again")){
+        if (button.getText().equals("Restart")){
             newFrame.dispose();
             
             QuickStart game = new QuickStart();

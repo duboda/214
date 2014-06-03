@@ -179,7 +179,7 @@ public class Shape {
         
         for (int i = 0; i < 4; ++i) {
             int x = startX + this.x(i);
-            int y = startY - this.y(i);
+            int y = startY + this.y(i);
             drawSquare(g, 0 + x * squareWidth,
                        startY + y * squareHeight,
                        this.getShape());

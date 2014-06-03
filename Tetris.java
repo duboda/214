@@ -11,6 +11,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
@@ -38,11 +39,20 @@ public class Tetris implements ActionListener{
     Board board2;    
     JButton newGame;
     JButton homePage;
+    JPanel buttonPanel;
+    JPanel roundPanel;
+    JLabel roundLabel;
+    JLabel leftLabel;
+    JLabel leftLabel2;
+    JPanel leftPanel;
+    createpiece listpiece;
     
     
     public Tetris(Board.MODE mode) {
 //        newframeL = new JFrame("L");
 //        newframeL.setSize(400,800);
+        listpiece = new createpiece();
+        listpiece.createpiece();        
         newFrame = new JFrame();
 //        setSize(200,400);
 //        newframeL.setVisible(true);
@@ -67,20 +77,42 @@ public class Tetris implements ActionListener{
         
         
         
+        
         // add buttons
         newGame = new JButton();
         homePage = new JButton();
         newGame.addActionListener(this);
         homePage.addActionListener(this);
+
         homePage.setText("Homepage");
-        newGame.setText("Try Again");
+        newGame.setText("Restart");
         
         // add all labels to panel
         midPanel.add(statusBar2); midPanel.add(statusBar);
         midPanel.add(nextPiece2); midPanel.add(nextPiece);
         midPanel.add(heldPiece2); midPanel.add(heldPiece);
-        midPanel.add(newGame);
-        midPanel.add(homePage);
+        
+        
+
+        buttonPanel = new JPanel();
+        midPanel.add(buttonPanel);
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+        buttonPanel.add(newGame);
+        buttonPanel.add(homePage);
+        roundPanel = new JPanel();
+        midPanel.add(roundPanel);
+        roundPanel.setLayout(new BoxLayout(roundPanel, BoxLayout.Y_AXIS));
+        JLabel title = new JLabel("Round");
+        roundPanel.add(title);
+        roundLabel = new JLabel("1");
+        leftPanel = new JPanel();
+        leftPanel.setLayout(new GridLayout(1,2));
+        leftLabel = new JLabel("20");
+        leftLabel2 = new JLabel("20");
+        roundPanel.add(roundLabel);
+        roundPanel.add(leftPanel);
+        leftPanel.add(leftLabel);
+        leftPanel.add(leftLabel2);
         
 //        newFrame.add(midPanel);
 //        newFrame.add(statusBar, BorderLayout.SOUTH);
@@ -90,6 +122,7 @@ public class Tetris implements ActionListener{
         board.setOtherBoard(board2);
         board2.setOtherBoard(board);
         
+
         // add components to frame
         newFrame.add(board2);
         newFrame.add(midPanel);
@@ -135,6 +168,12 @@ public class Tetris implements ActionListener{
     public JLabel heldPiece2() {return heldPiece2;}
     
     public JPanel getpanel(){ return midPanel;}
+    
+    public JLabel leftpiece1(){return leftLabel2;}
+    public JLabel leftpiece2(){return leftLabel;}
+    public createpiece list(){return listpiece;}
+    public JLabel round(){return roundLabel;}
+
 
     class TAdapter extends KeyAdapter {
          
@@ -209,9 +248,9 @@ public class Tetris implements ActionListener{
                 }
                 break;
             case KeyEvent.VK_2:
-                if (board2.numLinesRemoved>=2){
+                if (board2.numLinesRemoved>=4){
                     board.fast();
-                    board2.numLinesRemoved = board2.numLinesRemoved-2;
+                    board2.numLinesRemoved = board2.numLinesRemoved-4;
                     board2.statusbar.setText(String.valueOf(board2.numLinesRemoved));                    
                 }
                 break;                
@@ -223,9 +262,9 @@ public class Tetris implements ActionListener{
                 }
                 break;
             case KeyEvent.VK_PERIOD:
-                if (board.numLinesRemoved>=2){
+                if (board.numLinesRemoved>=4){
                     board2.fast();
-                    board.numLinesRemoved = board.numLinesRemoved-2;
+                    board.numLinesRemoved = board.numLinesRemoved-4;
                     board.statusbar.setText(String.valueOf(board.numLinesRemoved));                    
                 }
                 break;                  
@@ -233,72 +272,5 @@ public class Tetris implements ActionListener{
         }
     }
 
-//    class TAdapter extends KeyAdapter {
-//         
-//        public void keyPressed(KeyEvent e) {
-//             
-//            if (!board.isStarted || board.curPiece.getShape() == Shape.Tetrominoes.NoShape)
-//                return;
-//            if (!board2.isStarted || board2.curPiece.getShape() == Shape.Tetrominoes.NoShape)  
-//                return;
-//             
-//            int keycode = e.getKeyCode();
-//
-//            if (keycode == KeyEvent.VK_SPACE) {
-//                board.pause();
-//                board2.pause();
-//                return;
-//            }
-//
-//            if (board.isPaused)
-//                return;
-//
-//            switch (keycode) {
-//            case 'a':
-//            case 'A':
-//                board2.tryMove(board2.curPiece, board2.curX - 1, board2.curY);
-//                break; 
-//            case 's':
-//            case 'S':
-//                for (int i = 1 ; i < 4; i++){
-//                    board2.oneLineDown();
-//                }
-//                break;
-//            case 'd':
-//            case 'D':
-//                board2.tryMove(board2.curPiece, board2.curX + 1, board2.curY);
-//                break;                 
-//            case 'w': 
-//            case 'W':
-//                board2.tryMove(board2.curPiece.rotateRight(), board2.curX, board2.curY);
-//                break;                  
-//            case KeyEvent.VK_LEFT:
-//                board.tryMove(board.curPiece, board.curX - 1, board.curY);
-//                break;
-//            case KeyEvent.VK_RIGHT:
-//                board.tryMove(board.curPiece, board.curX + 1, board.curY);
-//                break;
-//            case KeyEvent.VK_DOWN:
-//                for (int i = 1 ; i < 4; i++){
-//                    board.oneLineDown();
-//                }
-//                break;
-//            case KeyEvent.VK_UP:
-//                board.tryMove(board.curPiece.rotateRight(), board.curX, board.curY);
-//                break;
-//            case KeyEvent.VK_SHIFT:
-//                int keyLoc = e.getKeyLocation();
-//                if (keyLoc == KeyEvent.KEY_LOCATION_RIGHT)
-//                    board.hold();
-//                else 
-//                    board2.hold();
-//                    
-//                break;
-//            case KeyEvent.VK_ENTER:
-//                // do check mode here
-//                board.swapHeld(board2);
-//                break;
-//            }
-//        }
-//    }
+
 }
