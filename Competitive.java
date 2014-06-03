@@ -30,7 +30,7 @@ public class Competitive extends Tetris {
     
     public void actionPerformed(ActionEvent e) {
         JButton button = (JButton) e.getSource();
-        if (button.getText().equals("try again")){
+        if (button.getText().equals("restart")){
             newFrame.dispose();
             
             Competitive game = new Competitive();
@@ -117,9 +117,9 @@ public class Competitive extends Tetris {
                 }
                 break;
             case KeyEvent.VK_2:
-                if (board2.numLinesRemoved>=2){
+                if (board2.numLinesRemoved>=4){
                     board.fast();
-                    board2.numLinesRemoved -= 2;
+                    board2.numLinesRemoved -= 4;
                     board2.statusbar.setText(String.valueOf(board2.numLinesRemoved));                    
                 }
                 break;                
@@ -131,9 +131,9 @@ public class Competitive extends Tetris {
                 }
                 break;
             case KeyEvent.VK_PERIOD:
-                if (board.numLinesRemoved>=2){
+                if (board.numLinesRemoved>=4){
                     board2.fast();
-                    board.numLinesRemoved -= 2;
+                    board.numLinesRemoved -= 4;
                     board.statusbar.setText(String.valueOf(board.numLinesRemoved));                    
                 }
                 break;

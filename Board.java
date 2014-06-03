@@ -58,14 +58,21 @@ public class Board extends JPanel implements ActionListener {
     Shape curPiece;
     Shape nextPiece;
     Shape heldPiece;
+    createpiece newpiece;
     Tetrominoes[] board;
     int player = 0;
     int numLinesRemoved = 0;
     int curX = 0;
     int curY = 0;
+    int leftnumber = 20;
     JLabel otherPlayer;
     JPanel restart;
+    JLabel leftpiece;
+    JLabel otherpiece;
     JButton newgame;
+    JLabel roundlabel;
+    int round = 1;
+    int speed=400;
     /**
      * Class constructor.
      * @param parent parent Tetris canvas
@@ -78,7 +85,7 @@ public class Board extends JPanel implements ActionListener {
        curPiece = new Shape();
        nextPiece = new Shape();
        heldPiece = new Shape();
-       timer = new Timer(400, this);
+       timer = new Timer(speed, this);
        midPanel = newPanel;
        
        isFallingFinished = false;
@@ -86,21 +93,29 @@ public class Board extends JPanel implements ActionListener {
        isPaused = false;
        isSwapped = false;
        heldSwapped = false;
-       
+       newpiece = new createpiece();
+       newpiece = parent.list();
+       roundlabel = parent.round();
        if (m==1){
             statusbar =  parent.player1();
             nextPieceLabel = parent.nextPiece1();
             heldPieceLabel = parent.heldPiece1();
             otherPlayer = parent.player2();
+            leftpiece = parent.leftpiece1();
+            otherpiece = parent.leftpiece2();
+            
        }
        if (m==2){
             statusbar = parent.player2();
             nextPieceLabel = parent.nextPiece2();
             heldPieceLabel = parent.heldPiece2();
             otherPlayer = parent.player1();
+            leftpiece = parent.leftpiece2();
+            otherpiece = parent.leftpiece1();
        }
        
        board = new Tetrominoes[BOARD_WIDTH * BOARD_HEIGHT];
+
     }
     
     /**
@@ -133,7 +148,7 @@ public class Board extends JPanel implements ActionListener {
         numLinesRemoved = 0;
         clearBoard();
         
-        nextPiece.setRandomShape();
+        nextPiece = newpiece.nextpiece[0];
         newPiece();
         timer.start();
     }
@@ -170,6 +185,16 @@ public class Board extends JPanel implements ActionListener {
 //        System.out.println("getsize"+kkk);
         int boardTop = (int) size.getHeight() - BOARD_HEIGHT * squareHeight();
 //        System.out.println(boardTop);
+        if ((otherpiece.getText().equals("1"))&&!(leftpiece.getText().equals("20"))){
+            leftnumber = 20;
+            leftpiece.setText(String.valueOf(leftnumber));
+            up();
+            timer.stop();
+            speed /=2;
+            timer = new Timer(speed,this);
+            timer.start();
+            
+        }    
         if (statusbar.getText().equals("game over")){
             clearBoard();
             timer.stop();
@@ -262,15 +287,30 @@ public class Board extends JPanel implements ActionListener {
      * Creates a new piece at the top of the board if possible, otherwise game
      * over.
      */
+
     private void newPiece()
     {
         // enable swapping
+        if (leftpiece.getText().equals("1")){
+            newpiece.createpiece();           
+            leftnumber=20;
+            timer.stop();
+            speed /=2;
+            timer = new Timer(speed,this);
+            timer.start();
+            round++;
+            roundlabel.setText(String.valueOf(round));
+        }
+            
+
         if (curPiece.getShape() != Tetrominoes.NoShape)
             isSwapped = false;
         
         // shift next piece into current piece and randomly create next piece
         curPiece.setShape(nextPiece.getShape());
-        nextPiece.setRandomShape();
+        leftpiece.setText(String.valueOf(leftnumber));
+        leftnumber -= 1;
+        nextPiece = newpiece.nextpiece[20-leftnumber];        
         
         // set position of new piece
         curX = BOARD_WIDTH / 2;
@@ -279,10 +319,6 @@ public class Board extends JPanel implements ActionListener {
         // game over if new piece cannot move
         if (!tryMove(curPiece, curX, curY)) {
             curPiece.setShape(Tetrominoes.NoShape);
-//            timer.stop();
-//            isStarted = false;
-//            clearBoard();
-//            add(lblose);
             statusbar.setText("game over");
             repaint();
         }
