@@ -1,5 +1,9 @@
 package pkgtry;
- 
+
+/**
+*
+* @author Group Delta: Boda Du, Aaron Goldblum, Kanut Harichanwong, Kenny Franco, Xiying Deng, Cyrus Forbes
+*/ 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -47,7 +51,10 @@ public class SwingControlDemo implements ActionListener {
       mainFrame.setVisible(true);  
    }
 
-   void showLabelDemo(){
+    /**
+     * Show the label of the demo
+     */
+    void showLabelDemo(){
       headerLabel.setText(text);      
 
 //      JLabel label  = new JLabel("", JLabel.CENTER); 

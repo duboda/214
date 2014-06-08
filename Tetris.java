@@ -23,13 +23,16 @@ import pkgtry.Shape.Tetrominoes;
 
 public class Tetris implements ActionListener{
 
+    /** Show the status in the status bar */
     JLabel statusBar;
     JLabel statusBar2;
     
     //JLabel nextLabel;
+    /** Show the next piece of square */
     JLabel nextPiece;
     JLabel nextPiece2;
     
+    /** Show the piece of square held */
     JLabel heldPiece;
     JLabel heldPiece2;
     
@@ -47,7 +50,7 @@ public class Tetris implements ActionListener{
     JPanel leftPanel;
     createpiece listpiece;
     
-    
+    /** The Tetris game */
     public Tetris(Board.MODE mode) {
 //        newframeL = new JFrame("L");
 //        newframeL.setSize(400,800);
@@ -157,14 +160,19 @@ public class Tetris implements ActionListener{
    //     button.setText("Successfull");        
     }        
 
-
+    /** Show the status of player1 in the status bar */
     public JLabel player1() {return statusBar;}
+    /** Show the status of player2 in the status bar */
     public JLabel player2() {return statusBar2;}
     
+    /** Show the next piece of square of player1 in the status bar */
     public JLabel nextPiece1() {return nextPiece;}
+    /** Show the next piece of square of player2 in the status bar */
     public JLabel nextPiece2() {return nextPiece2;}
     
+    /** Show the piece of square held of player1 in the status bar */
     public JLabel heldPiece1() {return heldPiece;}
+    /** Show the piece of square held of player2 in the status bar */
     public JLabel heldPiece2() {return heldPiece2;}
     
     public JPanel getpanel(){ return midPanel;}

@@ -12,7 +12,8 @@ package pkgtry;
  */
 public class createpiece {
     Shape nextpiece[] = new Shape[21];
-    
+
+    /** Randomly create a piece of square */
     public void createpiece(){
         for(int i=0; i<21;i++){
             nextpiece[i] = new Shape();

@@ -6,6 +6,10 @@
 
 package pkgtry;
 
+/**
+*
+* @author Group Delta: Boda Du, Aaron Goldblum, Kanut Harichanwong, Kenny Franco, Xiying Deng, Cyrus Forbes
+*/
 import java.awt.Color;
 import java.util.Random;
 import java.lang.Math;
@@ -14,10 +18,10 @@ import javax.swing.JFrame;
 
 public class Shape {
     
-    // Tetromino type reference
+    /** Tetromino type reference */
     enum Tetrominoes { NoShape, ZShape, SShape, LineShape, 
                TShape, SquareShape, LShape, MirroredLShape, GrayShape};
-    // Tetromino shape coordinates reference table
+    /** Tetromino shape coordinates reference table */
     private static final int[][][] coordsTable = new int[][][] {
             { {  0,  0 },  {  0,  0 },  {  0,  0 },  {  0,  0 } },
             { { -1,  0 },  {  0,  0 },  {  0,  1 },  {  1,  1 } },
@@ -29,8 +33,10 @@ public class Shape {
             { { -1,  0 },  {  0,  0 },  {  1,  0 },  {  1,  1 } }
         };
     
-    // color table reference
+    /** color table reference */
     private static JFrame defaultFrame = new JFrame();
+
+    /** default background color */
     private static Color defaultColor = defaultFrame.getBackground();
     private static final Color colors[] = { 
         defaultColor,             new Color(204, 102, 102), 
@@ -39,14 +45,14 @@ public class Shape {
         new Color(102, 204, 204), new Color(218, 170, 0)
     };
     
-    // Tetromino type
+    /** Tetromino type */
     private Tetrominoes pieceShape;
-    // Tetromino shape coordinates
+    /** Tetromino shape coordinates */
     private int coords[][];
     
 
     /**
-     * Class constructor
+     * Construct the shape of square
      */
     public Shape() {
 
@@ -186,6 +192,9 @@ public class Shape {
         }
     }
     
+    /**
+     * Draw the square given the position and shape 
+     */
     private void drawSquare(Graphics g, int x, int y, Tetrominoes shape)
     {
         int squareWidth = 10;
