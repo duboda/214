@@ -10,27 +10,30 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 
 /**
- * Tetris Game in the competitive mode
- * @author Group Delta: Boda Du, Aaron Goldblum, Kanut Harichanwong, Kenny Franco, Xiying Deng, Cyrus Forbes
+ *
+ * @author Kanut Harichanwong
  */
 public class Competitive extends Tetris {
     
     /**
-     * Construct a competitive mode instance
+     * Class constructor.
      */
     public Competitive() {
         super(Board.MODE.COMP);
         newFrame.setTitle("Competitive Mode");
         board.addKeyListener(new TAdapter());
         board2.addKeyListener(new TAdapter());
+        
+        this.roundTitle.setText("Round");
+        this.roundLabel.setText("1");
+        this.leftLabel.setText("20");
+        this.leftLabel2.setText("20");
     }
     
-    /**
-     * Check whether the players choose the action of 
-     * "try again" or "homepage"
-     */
+    
     public void actionPerformed(ActionEvent e) {
         JButton button = (JButton) e.getSource();
         
@@ -123,7 +126,7 @@ public class Competitive extends Tetris {
                 break;
             case KeyEvent.VK_2:
                 if (board2.numLinesRemoved>=4){
-                    board.fast();
+                    board.drop();
                     board2.numLinesRemoved -= 4;
                     board2.statusbar.setText(String.valueOf(board2.numLinesRemoved));                    
                 }
@@ -137,7 +140,7 @@ public class Competitive extends Tetris {
                 break;
             case KeyEvent.VK_PERIOD:
                 if (board.numLinesRemoved>=4){
-                    board2.fast();
+                    board2.drop();
                     board.numLinesRemoved -= 4;
                     board.statusbar.setText(String.valueOf(board.numLinesRemoved));                    
                 }

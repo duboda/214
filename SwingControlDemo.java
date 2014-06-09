@@ -1,12 +1,12 @@
 package pkgtry;
-
-/**
-*
-* @author Group Delta: Boda Du, Aaron Goldblum, Kanut Harichanwong, Kenny Franco, Xiying Deng, Cyrus Forbes
-*/ 
+ 
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.io.*;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
  
 public class SwingControlDemo implements ActionListener {
@@ -16,7 +16,8 @@ public class SwingControlDemo implements ActionListener {
    private JLabel statusLabel;
    private JPanel controlPanel;
    private JPanel buttonPanel;
-
+   private Desktop desktop;
+   private String path;
    
    String text;
    public SwingControlDemo(String m){
@@ -26,7 +27,7 @@ public class SwingControlDemo implements ActionListener {
 
    private void prepareGUI(){
       mainFrame = new JFrame("This is battle tetris game!");
-      mainFrame.setLocationRelativeTo(null);
+      mainFrame.setLocation(100,100);
       mainFrame.setSize(400,600);
       mainFrame.setLayout(new GridLayout(2, 1));
       mainFrame.addWindowListener(new WindowAdapter() {
@@ -51,28 +52,29 @@ public class SwingControlDemo implements ActionListener {
       mainFrame.setVisible(true);  
    }
 
-    /**
-     * Show the label of the demo
-     */
-    void showLabelDemo(){
+   void showLabelDemo(){
       headerLabel.setText(text);      
 
 //      JLabel label  = new JLabel("", JLabel.CENTER); 
       JButton button1 = new JButton();
       JButton button2 = new JButton();
       JButton button3 = new JButton();
+      JButton button4 = new JButton();
       
       button1.setText("Quick Start");
       button2.setText("Competitive");
       button3.setText("Cooperative");
+      button4.setText("Instructions");
       
       button1.addActionListener(this);
       button2.addActionListener(this);
       button3.addActionListener(this);
+      button4.addActionListener(this);
       
       buttonPanel.add(button1);
       buttonPanel.add(button2);
       buttonPanel.add(button3);
+      buttonPanel.add(button4);
       
       mainFrame.setVisible(true);  
    }
@@ -92,11 +94,27 @@ public class SwingControlDemo implements ActionListener {
             game = new Competitive();
         else if (button.getText().equals("Cooperative"))
             game = new Cooperative();
+        else if (button.getText().equals("Instructions")) {
+            game = null;
+            SwingControlDemo  swingControlDemo = new SwingControlDemo("please choose the model");      
+            swingControlDemo.showLabelDemo();
+            
+            desktop = Desktop.getDesktop();
+            path="src/pkgtry/Instructions.txt";
+            
+            try {
+                desktop.open(new File(path));
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
         else
             game = new QuickStart();
-        
-        game.newFrame.setLocationRelativeTo(null);
-        game.newFrame.setVisible(true);
+        if (!button.getText().equals("Instructions"))
+        {
+            game.newFrame.setLocationRelativeTo(null);
+            game.newFrame.setVisible(true);
+        }
    //     button.setText("Successfull");        
     }
 }

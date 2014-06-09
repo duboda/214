@@ -12,13 +12,13 @@ import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 
 /**
- * Tetris Game in the cooperative mode
- * @author Group Delta: Boda Du, Aaron Goldblum, Kanut Harichanwong, Kenny Franco, Xiying Deng, Cyrus Forbes
+ *
+ * @author Kanut Harichanwong
  */
 public class Cooperative extends Tetris {
     
     /**
-     * Construct a cooperative mode instance
+     * Class constructor.
      */
     public Cooperative(){
         super(Board.MODE.COOP);
@@ -27,10 +27,7 @@ public class Cooperative extends Tetris {
         board2.addKeyListener(new TAdapter());
     }
     
-    /**
-     * Check whether the players choose the action of 
-     * "try again" or "homepage"
-     */
+    
     public void actionPerformed(ActionEvent e) {
         JButton button = (JButton) e.getSource();
         if (button.getText().equals("Restart")){

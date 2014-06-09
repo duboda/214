@@ -1,0 +1,41 @@
+Welcome To Super Duper Two Player Tetris Fun Time Extravaganza
+A Team Delta Production
+
+Three different ways to play QUICK PLAY, COOPERATIVE, and COMPETITIVE
+
+SPACEBAR = Pause
+
+Player One Controls: On Left Side
+W = rotate piece
+A = move piece left
+D = move piece right
+S = move piece down
+LEFT SHIFT = save current piece / swaps held piece
+1 = send line to opponent (COMPETITIVE MODE ONLY)
+2 = drops opponent's current piece (COMPETITIVE MODE ONLY)
+ENTER = Switch held pieces between players (COOPERATIVE)
+
+Player Two Controls: On Right Side
+UP = rotate piece
+LEFT = move piece left
+RIGHT = move piece right
+DOWN = move piece down
+RIGHT SHIFT = save current piece / swaps held piece
+, = send line to opponent (COMPETITIVE MODE ONLY)
+. = drops opponent's current piece (COMPETITIVE MODE ONLY)
+ENTER = Switch held pieces between players (COOPERATIVE)
+
+QUICK START:
+This mode is just normal Tetris. Outlast Opponent to win.
+
+COOPERATIVE:
+This mode requires team work. Lines will not dissappear unless both
+players have the same lines completed.
+
+COMPETITIVE:
+This mode allows you to mess with your opponents game. Simply rack up points to
+either send a line up or make the opponents piece drop for two points each.
+Score is based on how many lines you have completed. There are twenty pieces per
+round and first to go through all the pieces is saved from getting a line pushed
+up to their board. The blocks get faster as rounds progress.
+

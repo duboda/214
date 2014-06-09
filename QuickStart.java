@@ -13,12 +13,12 @@ import javax.swing.JButton;
 
 /**
  *
- * @author Group Delta: Boda Du, Aaron Goldblum, Kanut Harichanwong, Kenny Franco, Xiying Deng, Cyrus Forbes
+ * @author Kanut Harichanwong
  */
 public class QuickStart extends Tetris {
     
     /**
-     * Construct a QuickStart instance.
+     * Class constructor.
      */
     public QuickStart() {
         super(Board.MODE.QKST);
@@ -27,10 +27,7 @@ public class QuickStart extends Tetris {
         board2.addKeyListener(new TAdapter());
     }
     
-    /**
-     * Check whether the players choose the action of 
-     * "try again" or "homepage"
-     */
+    
     public void actionPerformed(ActionEvent e) {
         JButton button = (JButton) e.getSource();
         if (button.getText().equals("Restart")){

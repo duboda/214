@@ -23,16 +23,13 @@ import pkgtry.Shape.Tetrominoes;
 
 public class Tetris implements ActionListener{
 
-    /** Show the status in the status bar */
     JLabel statusBar;
     JLabel statusBar2;
     
     //JLabel nextLabel;
-    /** Show the next piece of square */
     JLabel nextPiece;
     JLabel nextPiece2;
     
-    /** Show the piece of square held */
     JLabel heldPiece;
     JLabel heldPiece2;
     
@@ -44,13 +41,14 @@ public class Tetris implements ActionListener{
     JButton homePage;
     JPanel buttonPanel;
     JPanel roundPanel;
+    JLabel roundTitle;
     JLabel roundLabel;
     JLabel leftLabel;
     JLabel leftLabel2;
     JPanel leftPanel;
     createpiece listpiece;
     
-    /** The Tetris game */
+    
     public Tetris(Board.MODE mode) {
 //        newframeL = new JFrame("L");
 //        newframeL.setSize(400,800);
@@ -105,13 +103,13 @@ public class Tetris implements ActionListener{
         roundPanel = new JPanel();
         midPanel.add(roundPanel);
         roundPanel.setLayout(new BoxLayout(roundPanel, BoxLayout.Y_AXIS));
-        JLabel title = new JLabel("Round");
-        roundPanel.add(title);
-        roundLabel = new JLabel("1");
+        roundTitle = new JLabel("");
+        roundPanel.add(roundTitle);
+        roundLabel = new JLabel("");
         leftPanel = new JPanel();
         leftPanel.setLayout(new GridLayout(1,2));
-        leftLabel = new JLabel("20");
-        leftLabel2 = new JLabel("20");
+        leftLabel = new JLabel("");
+        leftLabel2 = new JLabel("");
         roundPanel.add(roundLabel);
         roundPanel.add(leftPanel);
         leftPanel.add(leftLabel);
@@ -139,40 +137,17 @@ public class Tetris implements ActionListener{
     }
     
     public void actionPerformed(ActionEvent e) {
-//        JButton button = (JButton) e.getSource();
-//        if (button.getText().equals("try again")){
-//            newFrame.dispose();
-//            
-//            Tetris game = new Tetris();
-//            if (mode == 1)
-//                game = new Competitive();
-//            else if (mode == 2)
-//                game = new Cooperative();
-//            
-//            game.newFrame.setLocationRelativeTo(null);
-//            game.newFrame.setVisible(true);
-//        }
-//        else if (button.getText().equals("homepage")){
-//              newFrame.dispose();
-//              SwingControlDemo  swingControlDemo = new SwingControlDemo("please choose the model");      
-//              swingControlDemo.showLabelDemo();
-//        }
-   //     button.setText("Successfull");        
+        // to be overridden
     }        
 
-    /** Show the status of player1 in the status bar */
+
     public JLabel player1() {return statusBar;}
-    /** Show the status of player2 in the status bar */
     public JLabel player2() {return statusBar2;}
     
-    /** Show the next piece of square of player1 in the status bar */
     public JLabel nextPiece1() {return nextPiece;}
-    /** Show the next piece of square of player2 in the status bar */
     public JLabel nextPiece2() {return nextPiece2;}
     
-    /** Show the piece of square held of player1 in the status bar */
     public JLabel heldPiece1() {return heldPiece;}
-    /** Show the piece of square held of player2 in the status bar */
     public JLabel heldPiece2() {return heldPiece2;}
     
     public JPanel getpanel(){ return midPanel;}
@@ -181,6 +156,7 @@ public class Tetris implements ActionListener{
     public JLabel leftpiece2(){return leftLabel;}
     public createpiece list(){return listpiece;}
     public JLabel round(){return roundLabel;}
+    public JLabel roundTitle(){return roundTitle;}
 
 
     class TAdapter extends KeyAdapter {
@@ -257,7 +233,7 @@ public class Tetris implements ActionListener{
                 break;
             case KeyEvent.VK_2:
                 if (board2.numLinesRemoved>=4){
-                    board.fast();
+                    board.drop();
                     board2.numLinesRemoved = board2.numLinesRemoved-4;
                     board2.statusbar.setText(String.valueOf(board2.numLinesRemoved));                    
                 }
@@ -271,7 +247,7 @@ public class Tetris implements ActionListener{
                 break;
             case KeyEvent.VK_PERIOD:
                 if (board.numLinesRemoved>=4){
-                    board2.fast();
+                    board2.drop();
                     board.numLinesRemoved = board.numLinesRemoved-4;
                     board.statusbar.setText(String.valueOf(board.numLinesRemoved));                    
                 }

@@ -8,7 +8,7 @@ package pkgtry;
 
 /**
  *
- * @author Group Delta: Boda Du, Aaron Goldblum, Kanut Harichanwong, Kenny Franco, Xiying Deng, Cyrus Forbes
+ * @author bodadu
  */
 import java.awt.Color;
 import java.awt.Dimension;
@@ -28,44 +28,38 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import pkgtry.Shape.Tetrominoes;
-import quicktime.QTUnknownOSException;
+//import quicktime.QTUnknownOSException;
 
 
 public class Board extends JPanel implements ActionListener {
 
-    /** width of board */
+    // constants defining board
     static final int BOARD_WIDTH = 10;
-    /** height of board */
     static final int BOARD_HEIGHT = 20;
     static enum MODE {QKST, COMP, COOP};
     
-    /** Timer */
+    // Timer
     Timer timer;
     
-    /** marker for gameflow to check whether object has down to the bottom */
+    // for gameflow
     boolean isFallingFinished;
-    /** marker for gameflow to check whether game has started */
     boolean isStarted;
-    /** marker for gameflow to check whether game is paused */
     boolean isPaused;
     boolean isSwapped;
     boolean heldSwapped;
     
-    /** Middle JPanel for drawing next and hold */
+    // Middle JPanel for drawing next and hold
     JPanel midPanel;
     
-    /** JLabels for middle panel */
+    // JLabels for middle panel
     JLabel statusbar;
     JLabel nextPieceLabel;
     JLabel heldPieceLabel;
     
     // variables for game logic
     MODE mode;
-    /** the shape of current piece of object */
     Shape curPiece;
-    /** the shape of next piece of object */
     Shape nextPiece;
-    /** the shape of the piece of object held by the player */
     Shape heldPiece;
     createpiece newpiece;
     Tetrominoes[] board;
@@ -85,11 +79,10 @@ public class Board extends JPanel implements ActionListener {
     JLabel roundlabel;
     int round = 1;
     int speed=400;
-
     /**
-     * Construct a Board instance
+     * Class constructor.
      * @param parent parent Tetris canvas
-     * @param m player number either 1 or 2
+     * @param m player number
      */
     public Board(Tetris parent, int m, JPanel newPanel, MODE mode) {
        player = m;
@@ -135,6 +128,11 @@ public class Board extends JPanel implements ActionListener {
 
     }
     
+    public int getScore()
+    {
+        return numLinesRemoved;
+    }
+    
     /**
      * Moves game one step ahead
      * @param e event triggered by timer timeout
@@ -148,17 +146,10 @@ public class Board extends JPanel implements ActionListener {
         }
     }
     
-    /** @return another board */
     public void setOtherBoard(Board otherBoard){ this.otherBoard = otherBoard;};
     public Tetrominoes[] getBoard(){ return board;};
-
-    /** @return status bar */
     public JLabel getStatusbar(){ return statusbar;};
-
-    /** @return width of the square */
     int squareWidth() { return (int) getWidth() / BOARD_WIDTH; }
-
-    /** @return height of the square */
     int squareHeight() {return (int) getHeight() / BOARD_HEIGHT; }
     Tetrominoes shapeAt(int x, int y) { return board[(y * BOARD_WIDTH) + x]; }
     
@@ -197,7 +188,12 @@ public class Board extends JPanel implements ActionListener {
         if (isPaused) {
             timer.stop();
             statusbar.setText("paused");
-        } else {
+        } else if(mode == MODE.COOP) {
+            timer.start();
+            statusbar.setText(String.valueOf(numLinesRemoved + otherBoard.getScore()));
+            otherBoard.statusbar.setText(String.valueOf(numLinesRemoved + otherBoard.getScore()));
+        }
+        else {
             timer.start();
             statusbar.setText(String.valueOf(numLinesRemoved));
         }
@@ -214,7 +210,7 @@ public class Board extends JPanel implements ActionListener {
 
     /**
      * 
-     * @param g of graph for the appearance
+     * @param g 
      */
     public void paint(Graphics g)
     { 
@@ -278,17 +274,11 @@ public class Board extends JPanel implements ActionListener {
         }
     }
     
-    /**
-     * Show the picture of lose
-     */
     public void drawLose(Graphics g){
         Image buffer=new ImageIcon("src/pkgtry/lose.png").getImage();
         g.drawImage(buffer, 0, 0, this.getWidth(), this.getHeight(), this); 
     };
     
-    /**
-     * Show the picture of win
-     */
     public void drawWin(Graphics g){
         Image buffer=new ImageIcon("src/pkgtry/win.png").getImage();
         g.drawImage(buffer, 0, 0, this.getWidth(), this.getHeight(), this); 
@@ -339,6 +329,7 @@ public class Board extends JPanel implements ActionListener {
      * Creates a new piece at the top of the board if possible, otherwise game
      * over.
      */
+
     private void newPiece()
     {
         // enable swapping
@@ -478,11 +469,21 @@ public class Board extends JPanel implements ActionListener {
         }
 
         if (numFullLines > 0) {
-            numLinesRemoved += numFullLines;
-            statusbar.setText(String.valueOf(numLinesRemoved));
-            isFallingFinished = true;
-            curPiece.setShape(Tetrominoes.NoShape);
-            repaint();
+            if (mode == MODE.COOP) {
+                numLinesRemoved += numFullLines;
+                statusbar.setText(String.valueOf(numLinesRemoved + otherBoard.getScore()));
+                otherBoard.statusbar.setText(String.valueOf(numLinesRemoved + otherBoard.getScore()));
+                isFallingFinished = true;
+                curPiece.setShape(Tetrominoes.NoShape);
+                repaint();
+            }
+            else {
+                numLinesRemoved += numFullLines;
+                statusbar.setText(String.valueOf(numLinesRemoved));
+                isFallingFinished = true;
+                curPiece.setShape(Tetrominoes.NoShape);
+                repaint();
+            }
         }
      }
     
@@ -548,7 +549,7 @@ public class Board extends JPanel implements ActionListener {
                 board[j] = Tetrominoes.NoShape;
         }
     }
-    public void fast(){
+    public void drop(){
         int newY = curY;
         while (newY > 0) {
             if (!tryMove(curPiece, curX, newY - 1))
@@ -558,9 +559,7 @@ public class Board extends JPanel implements ActionListener {
         pieceDropped();   
     }
     
-    /**
-     * Draw the squre when given the position and shape.
-     */
+
     private void drawSquare(Graphics g, int x, int y, Tetrominoes shape)
     {
         Color color = colors[shape.ordinal()];
@@ -579,7 +578,7 @@ public class Board extends JPanel implements ActionListener {
 
     }
 
-    /** Set the colors of the pieces of squares */
+
     private static final Color colors[] = { 
         new Color( 50,  50,  50), new Color(204, 102, 102), 
         new Color(102, 204, 102), new Color(102, 102, 204), 
@@ -587,4 +586,8 @@ public class Board extends JPanel implements ActionListener {
         new Color(102, 204, 204), new Color(218, 170,   0),
         new Color(100, 100, 100)
     };
+
+
+        
+
 }

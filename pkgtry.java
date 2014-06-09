@@ -7,16 +7,14 @@
 package pkgtry;
 
 /**
- * This program enables two players to play Tetris on the same
- * computer both cooperatively and competitively. 
- * @author Group Delta: Boda Du, Aaron Goldblum, Kanut Harichanwong, Kenny Franco, Xiying Deng, Cyrus Forbes
- * @version Version 1.00
- * 
+ *
+ * @author bodadu
  */
 public class pkgtry {
        public static void main(String[] args){
       SwingControlDemo  swingControlDemo = new SwingControlDemo("please choose the model");      
       swingControlDemo.showLabelDemo();
+      
    }
     
 }
