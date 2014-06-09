@@ -11,10 +11,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 
-/**
- *
- * @author Kanut Harichanwong
- */
+
 public class QuickStart extends Tetris {
     
     /**

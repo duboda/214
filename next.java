@@ -8,20 +8,10 @@ package pkgtry;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.Timer;
 
 import pkgtry.Shape.Tetrominoes;
-/**
- *
- * @author bodadu
- */
+
 public class next extends JPanel{
     static final int BOARD_WIDTH = 4;
     static final int BOARD_HEIGHT = 4;
@@ -36,11 +26,8 @@ public class next extends JPanel{
     { 
         super.paint(g);
         Dimension size = getSize();
-//        int kkk = (int)size.getHeight();
-//        System.out.println("getsize"+kkk);
+        
         int boardTop = (int) size.getHeight() - BOARD_HEIGHT * squareHeight();
-//        System.out.println(boardTop);
-
        
 
         if (curPiece.getShape() != Tetrominoes.NoShape) {

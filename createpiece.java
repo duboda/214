@@ -6,10 +6,7 @@
 
 package pkgtry;
 
-/**
- *
- * @author bodadu
- */
+
 public class createpiece {
     Shape nextpiece[] = new Shape[21];
     

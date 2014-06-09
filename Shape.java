@@ -8,7 +8,6 @@ package pkgtry;
 
 import java.awt.Color;
 import java.util.Random;
-import java.lang.Math;
 import java.awt.Graphics;
 import javax.swing.JFrame;
 
@@ -30,8 +29,8 @@ public class Shape {
         };
     
     // color table reference
-    private static JFrame defaultFrame = new JFrame();
-    private static Color defaultColor = defaultFrame.getBackground();
+    private static final JFrame defaultFrame = new JFrame();
+    private static final Color defaultColor = defaultFrame.getBackground();
     private static final Color colors[] = { 
         defaultColor,             new Color(204, 102, 102), 
         new Color(102, 204, 102), new Color(102, 102, 204), 
@@ -151,18 +150,7 @@ public class Shape {
         }
         return result;
     }
-//      private void clearmiddle()
-//    {
-//            int squareWidth = 10;
-//        int squareHeight = 10;   
-//            for (int i = 0; i < 4; ++i){
-//              int x = startX + this.x(i);
-//            int y = startY - this.y(i);
-//            drawSquare(g, 0 + x * squareWidth,
-//                       startY + y * squareHeight,
-//                       Tetrominoes.NoShape);
-//            }
-//    }
+    
     public void draw(Graphics g, int startX, int startY){
         int squareWidth = 10;
         int squareHeight = 10;

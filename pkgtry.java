@@ -6,15 +6,10 @@
 
 package pkgtry;
 
-/**
- *
- * @author bodadu
- */
+
 public class pkgtry {
-       public static void main(String[] args){
-      SwingControlDemo  swingControlDemo = new SwingControlDemo("please choose the model");      
-      swingControlDemo.showLabelDemo();
-      
+        public static void main(String[] args){
+        SwingControlDemo  swingControlDemo = new SwingControlDemo("Please select mode");      
+        swingControlDemo.showLabelDemo();  
    }
-    
 }

@@ -6,21 +6,12 @@
 
 package pkgtry;
 
-/**
- *
- * @author bodadu
- */
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -28,7 +19,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import pkgtry.Shape.Tetrominoes;
-//import quicktime.QTUnknownOSException;
 
 
 public class Board extends JPanel implements ActionListener {
@@ -52,7 +42,7 @@ public class Board extends JPanel implements ActionListener {
     JPanel midPanel;
     
     // JLabels for middle panel
-    JLabel statusbar;
+    JLabel statusBar;
     JLabel nextPieceLabel;
     JLabel heldPieceLabel;
     
@@ -61,7 +51,7 @@ public class Board extends JPanel implements ActionListener {
     Shape curPiece;
     Shape nextPiece;
     Shape heldPiece;
-    createpiece newpiece;
+    createpiece newPiece;
     Tetrominoes[] board;
     Board otherBoard;
     int player = 0;
@@ -69,22 +59,25 @@ public class Board extends JPanel implements ActionListener {
     int curX = 0;
     int curY = 0;
     
-    int leftnumber = 20;
+    int leftNumber = 20;
     boolean isSpedUp = false;
     
     JPanel restart;
-    JLabel leftpiece;
-    JLabel otherpiece;
+    JLabel leftPiece;
+    JLabel otherPiece;
     JButton newgame;
-    JLabel roundlabel;
+    JLabel roundLabel;
     int round = 1;
-    int speed=400;
+    int speed = 400;
+    
     /**
      * Class constructor.
      * @param parent parent Tetris canvas
      * @param m player number
+     * @param midPanel
+     * @param mode 
      */
-    public Board(Tetris parent, int m, JPanel newPanel, MODE mode) {
+    public Board(Tetris parent, int m, JPanel midPanel, MODE mode) {
        player = m;
        setBorder(BorderFactory.createLoweredBevelBorder());
        setFocusable(true);
@@ -92,7 +85,7 @@ public class Board extends JPanel implements ActionListener {
        nextPiece = new Shape();
        heldPiece = new Shape();
        timer = new Timer(speed, this);
-       midPanel = newPanel;
+       this.midPanel = midPanel;
        this.mode = mode;
        
        isFallingFinished = false;
@@ -102,26 +95,26 @@ public class Board extends JPanel implements ActionListener {
        heldSwapped = false;
        
        if (mode == MODE.COMP){
-            newpiece = new createpiece();
-            newpiece = parent.list();
+            newPiece = new createpiece();
+            newPiece = parent.list();
        }
        
-       roundlabel = parent.round();
+       roundLabel = parent.round();
        if (m==1){
-            statusbar =  parent.player1();
+            statusBar =  parent.player1();
             nextPieceLabel = parent.nextPiece1();
             heldPieceLabel = parent.heldPiece1();
             
-            leftpiece = parent.leftpiece1();
-            otherpiece = parent.leftpiece2();
+            leftPiece = parent.leftpiece1();
+            otherPiece = parent.leftpiece2();
        }
        if (m==2){
-            statusbar = parent.player2();
+            statusBar = parent.player2();
             nextPieceLabel = parent.nextPiece2();
             heldPieceLabel = parent.heldPiece2();
 
-            leftpiece = parent.leftpiece2();
-            otherpiece = parent.leftpiece1();
+            leftPiece = parent.leftpiece2();
+            otherPiece = parent.leftpiece1();
        }
        
        board = new Tetrominoes[BOARD_WIDTH * BOARD_HEIGHT];
@@ -148,7 +141,7 @@ public class Board extends JPanel implements ActionListener {
     
     public void setOtherBoard(Board otherBoard){ this.otherBoard = otherBoard;};
     public Tetrominoes[] getBoard(){ return board;};
-    public JLabel getStatusbar(){ return statusbar;};
+    public JLabel getStatusbar(){ return statusBar;};
     int squareWidth() { return (int) getWidth() / BOARD_WIDTH; }
     int squareHeight() {return (int) getHeight() / BOARD_HEIGHT; }
     Tetrominoes shapeAt(int x, int y) { return board[(y * BOARD_WIDTH) + x]; }
@@ -168,7 +161,7 @@ public class Board extends JPanel implements ActionListener {
         clearBoard();
         
         if (mode == MODE.COMP)
-            nextPiece = newpiece.nextpiece[0];
+            nextPiece = newPiece.nextpiece[0];
         else
             nextPiece.setRandomShape();
         
@@ -187,15 +180,15 @@ public class Board extends JPanel implements ActionListener {
         isPaused = !isPaused;
         if (isPaused) {
             timer.stop();
-            statusbar.setText("paused");
+            statusBar.setText("paused");
         } else if(mode == MODE.COOP) {
             timer.start();
-            statusbar.setText(String.valueOf(numLinesRemoved + otherBoard.getScore()));
-            otherBoard.statusbar.setText(String.valueOf(numLinesRemoved + otherBoard.getScore()));
+            statusBar.setText(String.valueOf(numLinesRemoved + otherBoard.getScore()));
+            otherBoard.statusBar.setText(String.valueOf(numLinesRemoved + otherBoard.getScore()));
         }
         else {
             timer.start();
-            statusbar.setText(String.valueOf(numLinesRemoved));
+            statusBar.setText(String.valueOf(numLinesRemoved));
         }
         repaint();
     }
@@ -217,15 +210,12 @@ public class Board extends JPanel implements ActionListener {
         super.paint(g);
 
         Dimension size = getSize();
-//        int kkk = (int)size.getHeight();
-//        System.out.println("getsize"+kkk);
         int boardTop = (int) size.getHeight() - BOARD_HEIGHT * squareHeight();
-//        System.out.println(boardTop);
 
         if (mode == MODE.COMP){
-            if ((otherpiece.getText().equals("1"))&&!isSpedUp){
-                leftnumber = 20;
-                leftpiece.setText(String.valueOf(leftnumber));
+            if ((otherPiece.getText().equals("1"))&&!isSpedUp){
+                leftNumber = 20;
+                leftPiece.setText(String.valueOf(leftNumber));
                 up();
                 timer.stop();
                 speed *= 0.7;
@@ -236,11 +226,11 @@ public class Board extends JPanel implements ActionListener {
             }
         }
         
-        if (statusbar.getText().equals("Game Over")){
+        if (statusBar.getText().equals("Game Over")){
             this.drawLose(g);
         
         }
-        else if (statusbar.getText().equals("You Win")){
+        else if (statusBar.getText().equals("You Win")){
             this.drawWin(g);
         }
         else {
@@ -264,12 +254,12 @@ public class Board extends JPanel implements ActionListener {
             }
             
             if (player == 2){
-                nextPiece.draw(midPanel.getGraphics(), 10, 30);
-                heldPiece.draw(midPanel.getGraphics(), 10, 45);
+                nextPiece.draw(midPanel.getGraphics(), 10, 26);
+                heldPiece.draw(midPanel.getGraphics(), 10, 44);
             }
             else if(player == 1){
-                nextPiece.draw(midPanel.getGraphics(), 30, 30);
-                heldPiece.draw(midPanel.getGraphics(), 30, 45);
+                nextPiece.draw(midPanel.getGraphics(), 30, 26);
+                heldPiece.draw(midPanel.getGraphics(), 30, 44);
             }
         }
     }
@@ -333,20 +323,22 @@ public class Board extends JPanel implements ActionListener {
     private void newPiece()
     {
         // enable swapping
-        if (curPiece.getShape() != Tetrominoes.NoShape)
+        if (curPiece.getShape() != Tetrominoes.NoShape){
             isSwapped = false;
+            heldSwapped = false;
+        }
         
         if (mode == MODE.COMP) {
-            if (leftpiece.getText().equals("1")){
-                newpiece.createpiece();           
-                leftnumber=20;
+            if (leftPiece.getText().equals("1")){
+                newPiece.createpiece();           
+                leftNumber=20;
                 timer.stop();
                 speed *= 0.7;
                 timer = new Timer(speed,this);
                 timer.start();
-                round = Integer.parseInt(roundlabel.getText());
+                round = Integer.parseInt(roundLabel.getText());
                 round++;
-                roundlabel.setText(String.valueOf(round));
+                roundLabel.setText(String.valueOf(round));
                 
                 isSpedUp = false;
             }
@@ -354,9 +346,9 @@ public class Board extends JPanel implements ActionListener {
             // shift next piece into current piece and randomly create next piece
             curPiece.setShape(nextPiece.getShape());
 
-            leftpiece.setText(String.valueOf(leftnumber));
-            leftnumber -= 1;
-            nextPiece = newpiece.nextpiece[20-leftnumber]; 
+            leftPiece.setText(String.valueOf(leftNumber));
+            leftNumber -= 1;
+            nextPiece = newPiece.nextpiece[20-leftNumber]; 
         }
         else {
             // shift next piece into current piece and randomly create next piece
@@ -379,7 +371,7 @@ public class Board extends JPanel implements ActionListener {
             this.stop();
             otherBoard.stop();
             
-            statusbar.setText("Game Over");
+            statusBar.setText("Game Over");
             
             if (mode == MODE.COOP)
                 otherBoard.getStatusbar().setText("Game Over");
@@ -471,15 +463,15 @@ public class Board extends JPanel implements ActionListener {
         if (numFullLines > 0) {
             if (mode == MODE.COOP) {
                 numLinesRemoved += numFullLines;
-                statusbar.setText(String.valueOf(numLinesRemoved + otherBoard.getScore()));
-                otherBoard.statusbar.setText(String.valueOf(numLinesRemoved + otherBoard.getScore()));
+                statusBar.setText(String.valueOf(numLinesRemoved + otherBoard.getScore()));
+                otherBoard.statusBar.setText(String.valueOf(numLinesRemoved + otherBoard.getScore()));
                 isFallingFinished = true;
                 curPiece.setShape(Tetrominoes.NoShape);
                 repaint();
             }
             else {
                 numLinesRemoved += numFullLines;
-                statusbar.setText(String.valueOf(numLinesRemoved));
+                statusBar.setText(String.valueOf(numLinesRemoved));
                 isFallingFinished = true;
                 curPiece.setShape(Tetrominoes.NoShape);
                 repaint();
@@ -502,9 +494,6 @@ public class Board extends JPanel implements ActionListener {
         curX = BOARD_WIDTH / 2;
         curY = BOARD_HEIGHT - 1 + curPiece.minY();
         isSwapped = true;
-                   
-        // update piece name in held slot
-//        heldPieceLabel.setText("Held:\n" + heldPiece.getShape().name());  
                     
         // for first held piece
         if (curPiece.getShape() == Tetrominoes.NoShape)
@@ -514,8 +503,7 @@ public class Board extends JPanel implements ActionListener {
     
     /**
      * Takes two boards and swaps their held pieces
-     * @param board 
-     * @param board2 
+     * @param otherBoard
      */
     public void swapHeld(Board otherBoard) {
         
@@ -529,19 +517,17 @@ public class Board extends JPanel implements ActionListener {
         otherBoard.heldPiece.setShape(temp);
         
         // then disable further swapping
-        //heldSwapped = true;
+        heldSwapped = true;
     } 
     
     public void up(){
-        //Shape temp = new Shape();
-        //temp.setShape(Tetrominoes.GrayShape);
         
         for (int k = BOARD_HEIGHT-1; k > 0; k--) {
                 for (int j = 0; j < BOARD_WIDTH; ++j)
                     board[(k * BOARD_WIDTH) + j] = shapeAt(j, k - 1);
                 }
         int k = (int)(BOARD_WIDTH * Math.random());
-//        System.out.println(k);
+
         for (int j = 0; j<BOARD_WIDTH;++j){
             if (j!=k)
                 board[j] = Tetrominoes.GrayShape;
@@ -586,8 +572,4 @@ public class Board extends JPanel implements ActionListener {
         new Color(102, 204, 204), new Color(218, 170,   0),
         new Color(100, 100, 100)
     };
-
-
-        
-
 }

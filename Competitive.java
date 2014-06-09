@@ -12,10 +12,6 @@ import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
-/**
- *
- * @author Kanut Harichanwong
- */
 public class Competitive extends Tetris {
     
     /**
@@ -121,28 +117,28 @@ public class Competitive extends Tetris {
                 if (board2.numLinesRemoved>=2){
                     board.up();
                     board2.numLinesRemoved -= 2;
-                    board2.statusbar.setText(String.valueOf(board2.numLinesRemoved));                    
+                    board2.statusBar.setText(String.valueOf(board2.numLinesRemoved));                    
                 }
                 break;
             case KeyEvent.VK_2:
                 if (board2.numLinesRemoved>=4){
                     board.drop();
                     board2.numLinesRemoved -= 4;
-                    board2.statusbar.setText(String.valueOf(board2.numLinesRemoved));                    
+                    board2.statusBar.setText(String.valueOf(board2.numLinesRemoved));                    
                 }
                 break;                
             case KeyEvent.VK_COMMA:
                 if (board.numLinesRemoved>=2){
                     board2.up();
                     board.numLinesRemoved -= 2;
-                    board.statusbar.setText(String.valueOf(board.numLinesRemoved));                    
+                    board.statusBar.setText(String.valueOf(board.numLinesRemoved));                    
                 }
                 break;
             case KeyEvent.VK_PERIOD:
                 if (board.numLinesRemoved>=4){
                     board2.drop();
                     board.numLinesRemoved -= 4;
-                    board.statusbar.setText(String.valueOf(board.numLinesRemoved));                    
+                    board.statusBar.setText(String.valueOf(board.numLinesRemoved));                    
                 }
                 break;
             }
